@@ -11,6 +11,7 @@
 // SFML
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include "pugixml.hpp"
 
 // FRAMEWORK
 #include "Defines.h"

@@ -19,8 +19,13 @@ void SceneGame::Init()
 	texIds.push_back("graphics/crosshair.png");
 	texIds.push_back("graphics/Trajectile.png");
 	texIds.push_back("graphics/blood.png");
+	
+	if (!tilemap.Load("map/untitled.tmx", "map/back3.png", 1026))
+	{
+		std::cout << "Failed to load tilemap!" << std::endl;
+	}
 
-	AddGameObject(new TileMap("TileMap"));
+	tilemap.setPosition(0.f, 0.f);
 	player = (Player*)AddGameObject(new Player("Player"));
 
 	for (int i = 0; i < 100; ++i)
@@ -31,6 +36,7 @@ void SceneGame::Init()
 	}
 
 	Scene::Init();
+
 }
 
 void SceneGame::Enter()
@@ -39,12 +45,12 @@ void SceneGame::Enter()
 
 	sf::Vector2f windowSize = FRAMEWORK.GetWindowSizeF();
 
-	worldView.setSize(windowSize);
-	worldView.setCenter({0.f, 0.f});
+	gameView.setSize(windowSize);
+	gameView.setCenter({0.f, 0.f});
 
 	uiView.setSize(windowSize);
 	uiView.setCenter(windowSize * 0.5f);
-
+	player->SetPosition({ 500.f, 500.f });
 	Scene::Enter();
 	SpawnZombies(1000);
 	cursor.setTexture(TEXTURE_MGR.Get("graphics/crosshair.png"));
@@ -71,7 +77,7 @@ void SceneGame::Update(float dt)
 
 	Scene::Update(dt);
 
-	worldView.setCenter(player->GetPosition());
+	gameView.setCenter(player->GetPosition());
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::Space))
 	{
@@ -86,10 +92,15 @@ void SceneGame::Update(float dt)
 
 void SceneGame::Draw(sf::RenderWindow& window)
 {
+	window.setView(gameView);
+	tilemap.Draw(window); 
+
 	Scene::Draw(window);
 
 	window.setView(uiView);
 	window.draw(cursor);
+	std::cout << "SceneGame::Draw Called" << std::endl;
+	std::cout << "Player Pos = " << player->GetPosition().x << ", " << player->GetPosition().y << std::endl;
 }
 
 void SceneGame::SpawnZombies(int count)

@@ -75,6 +75,9 @@
     <ClCompile Include="Blood.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="pugixml.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\InputMgr.h">
@@ -143,5 +146,42 @@
     <ClInclude Include="Blood.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="pugixml.hpp">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="pugiconfig.hpp">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="map\back1.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="map\back2.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="map\back3.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="map\back4.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="map\back5.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="map\box.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="map\back1.tsx" />
+    <None Include="map\back2.tsx" />
+    <None Include="map\back3.tsx" />
+    <None Include="map\back4.tsx" />
+    <None Include="map\back5.tsx" />
+    <None Include="map\box.tsx" />
+    <None Include="map\untitled.tiled-project" />
+    <None Include="map\untitled.tiled-session" />
+    <None Include="map\untitled.tmx" />
   </ItemGroup>
 </Project>

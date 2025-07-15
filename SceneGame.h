@@ -1,5 +1,6 @@
 #pragma once
 #include "Scene.h"
+#include "TileMap.h"
 
 class Player;
 class Zombie;
@@ -18,6 +19,8 @@ protected:
 
 	sf::View gameView;
 	sf::View mapView;
+
+	TileMap tilemap;
 
 	sf::RenderTexture miniMapTexture;
 	sf::Sprite miniMapSprite;
