@@ -346,3 +346,8 @@ bool Utils::PolygonsIntersect(const std::vector<sf::Vector2f>& polygonA, const s
     }
     return true;
 }
+
+float Utils::Length(const sf::Vector2f& v)
+{
+    return sqrtf(v.x * v.x + v.y * v.y);
+}

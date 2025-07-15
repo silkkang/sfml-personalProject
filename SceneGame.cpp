@@ -18,6 +18,7 @@ void SceneGame::Init()
 	texIds.push_back("graphics/chaser.png");
 	texIds.push_back("graphics/crosshair.png");
 	texIds.push_back("graphics/Trajectile.png");
+	texIds.push_back("graphics/blood.png");
 
 	AddGameObject(new TileMap("TileMap"));
 	player = (Player*)AddGameObject(new Player("Player"));
@@ -45,7 +46,7 @@ void SceneGame::Enter()
 	uiView.setCenter(windowSize * 0.5f);
 
 	Scene::Enter();
-
+	SpawnZombies(1000);
 	cursor.setTexture(TEXTURE_MGR.Get("graphics/crosshair.png"));
 	Utils::SetOrigin(cursor, Origins::MC);
 }
@@ -108,11 +109,12 @@ void SceneGame::SpawnZombies(int count)
 			zombie->SetActive(true);
 		}
 		zombie->SetType((Zombie::Types)Utils::RandomRange(0, Zombie::TotalTypes));
-		zombie->Reset();
 		zombie->SetPosition(sf::Vector2f(
 			Utils::RandomRange(-2500.f, 2500.f),
 			Utils::RandomRange(-2500.f, 2500.f)
 		));
+		zombie->Reset();
+		
 		zombieList.push_back(zombie);
 	}
 }

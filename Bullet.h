@@ -3,20 +3,24 @@
 #include "HitBox.h"
 
 class SceneGame;
-
-class Bullet : public GameObject
+class Bullet :
+	public GameObject
 {
 protected:
 	sf::Sprite body;
 	std::string texId = "graphics/Trajectile.png";
 
-	sf::Vector2f direction;
+	sf::Vector2f dir;
 	float speed = 0.f;
 	int damage = 0;
 
+	float RemoveBulletTime = 0.f;
+
+	bool isRemove = false;
+
 	HitBox hitBox;
 
-	SceneGame* sceneGame = nullptr;
+	SceneGame* sceneGame;
 
 public:
 	Bullet(const std::string& name = "");
@@ -46,4 +50,3 @@ public:
 
 	void Fire(const sf::Vector2f& pos, const sf::Vector2f& dir, float s, int d);
 };
-

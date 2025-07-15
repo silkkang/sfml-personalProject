@@ -4,6 +4,7 @@
 
 class SceneGame;
 class Bullet;
+class TileMap;
 
 class Player : public GameObject
 {
@@ -23,9 +24,20 @@ protected:
 	std::list<Bullet*> bulletList;
 	std::list<Bullet*> bulletPool;
 
+	int level = 1;
+	float exp = 0.f;
+	float nextExp = 100.f;
+
+	float showPer = 0.f;
 public:
+	float getPer() const { return showPer; }
+
 	Player(const std::string& name = "");
 	~Player() override = default;
+
+
+
+	void AddExp(float f) { exp += f; }
 
 	void SetPosition(const sf::Vector2f& pos) override;
 	void SetRotation(float rot) override;

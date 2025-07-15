@@ -25,6 +25,11 @@ public:
 	SceneGame();
 	~SceneGame() override = default;
 
+
+	const std::list<Zombie*> GetZombies() const
+	{
+		return zombieList;
+	}
 	void Init() override;
 	void Enter() override;
 	void Exit() override;

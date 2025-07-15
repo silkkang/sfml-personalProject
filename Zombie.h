@@ -3,6 +3,8 @@
 #include "HitBox.h"
 
 class Player;
+class SpriteGo;
+class TileMap;
 
 class Zombie : public GameObject
 {
@@ -13,7 +15,17 @@ public:
 		Chaser,
 		Crawler,
 	};
-
+	enum class ZombieState
+	{
+		Idle,
+		Patrol,
+		Chase,
+		Return//µ¹¾Æ¿Í!
+	};
+	ZombieState state = ZombieState::Idle;
+	sf::Vector2f spawnPos;
+	sf::Vector2f patrolTarget;
+	float patrolTimer = 0.f;
 	static const int TotalTypes = 3;
 	
 protected:
@@ -32,8 +44,8 @@ protected:
 	int hp;
 
 	Player* player = nullptr;
-
-	HitBox hitBox;
+	SpriteGo* blood = nullptr;
+	HitBox hitbox;
 
 public:
 	Zombie(const std::string& name = "");
@@ -62,5 +74,9 @@ public:
 	{
 		return body.getGlobalBounds();
 	}
+
+	const HitBox& GetHitBox() const { return hitbox; }
+	void OnDamage(int d);
+	void OnDie();
 };
 

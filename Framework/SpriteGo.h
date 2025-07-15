@@ -23,6 +23,8 @@ public:
 	void SetOrigin(const sf::Vector2f& o) override;
 	void SetOrigin(Origins preset) override;
 
+	void SetTexture(const std::string& id);
+
 	void Init() override;
 	void Release() override;
 	void Reset() override;

@@ -41,6 +41,11 @@ void SpriteGo::SetOrigin(Origins preset)
 
 }
 
+void SpriteGo::SetTexture(const std::string& id)
+{
+	sprite.setTexture(TEXTURE_MGR.Get(id));
+}
+
 void SpriteGo::Init()
 {
 }

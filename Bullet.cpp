@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Bullet.h"
 #include "SceneGame.h"
+#include "Zombie.h"
 
 Bullet::Bullet(const std::string& name)
 	: GameObject(name)
@@ -57,21 +58,39 @@ void Bullet::Reset()
 	body.setTexture(TEXTURE_MGR.Get(texId), true);
 	SetOrigin(Origins::ML);
 
-	SetPosition({ 0.f, 0.f }); 
+	SetPosition({ 0.f, 0.f });
 	SetRotation(0.f);
 	SetScale({ 1.f, 1.f });
 
-	direction = { 0.f, 0.f };
-	speed = 0;
+	dir = { 0.f, 0.f };
+	speed = 0.f;
+	RemoveBulletTime = 0.f;
 	damage = 0;
 }
 
 void Bullet::Update(float dt)
 {
-	SetPosition(position + direction * speed * dt);
+	RemoveBulletTime += dt;
+	if (RemoveBulletTime >= 2.f) {
+		SetActive(false);
+		RemoveBulletTime = 0.f;
+	}
+	SetPosition(position + dir * speed * dt);
 	hitBox.UpdateTransform(body, GetLocalBounds());
 
-	// 충돌 처리
+
+	const std::list<Zombie*>& list = sceneGame->GetZombies();
+	for (auto zombie : list) {
+		if (!zombie->GetActive() || !zombie->GetHitBox().GetActive())
+			continue;
+		if (Utils::CheckCollision(hitBox.rect, zombie->GetHitBox().rect)) {
+			//zombie->SetActive(false);
+			SetActive(false);
+			zombie->OnDamage(damage);
+
+			break;
+		}
+	}
 }
 
 void Bullet::Draw(sf::RenderWindow& window)
@@ -83,9 +102,9 @@ void Bullet::Draw(sf::RenderWindow& window)
 void Bullet::Fire(const sf::Vector2f& pos, const sf::Vector2f& dir, float s, int d)
 {
 	SetPosition(pos);
-	direction = dir;
+	this->dir = dir;
 	speed = s;
 	damage = d;
 
-	SetRotation(Utils::Angle(direction));
+	SetRotation(Utils::Angle(this->dir));
 }

@@ -79,6 +79,11 @@ void Player::Reset()
 
 	direction = { 0.f, 0.f };
 	look = { 1.0f, 0.f };
+
+	level = 1;
+	exp = 0.f;
+	nextExp = 100.f;
+
 }
 
 void Player::Update(float dt)
@@ -116,6 +121,13 @@ void Player::Update(float dt)
 	{
 		Shoot();
 	}
+
+	if (exp > nextExp) {
+		level++;
+		exp -= nextExp;
+		nextExp = 100 * pow(1.15, level - 1);
+	}
+	showPer = (exp / nextExp) * 100.f;
 }
 
 void Player::Draw(sf::RenderWindow& window)
@@ -140,7 +152,7 @@ void Player::Shoot()
 	}
 
 	bullet->Reset();
-	bullet->Fire(position + look * 10.f, look, 1000.f, 10);
+	bullet->Fire(position + look * 10.f, look, 1000.f, 100);
 
 	bulletList.push_back(bullet);
 	sceneGame->AddGameObject(bullet);
