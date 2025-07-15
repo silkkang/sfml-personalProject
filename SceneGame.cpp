@@ -93,7 +93,7 @@ void SceneGame::Draw(sf::RenderWindow& window)
 
 void SceneGame::SpawnZombies(int count)
 {
-	for (int i = 0; i < count; ++i)
+	for (int i = 0; i < count; ++i)//
 	{
 		Zombie* zombie = nullptr;
 		if (zombiePool.empty())
