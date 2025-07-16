@@ -10,6 +10,7 @@ class SceneGame : public Scene
 {
 protected:
 	Player* player = nullptr;
+
 	std::list<Zombie*> zombieList;
 	std::list<Zombie*> zombiePool;
 
@@ -25,9 +26,10 @@ protected:
 	sf::RenderTexture miniMapTexture;
 	sf::Sprite miniMapSprite;
 public:
+	TileMap* tilemapPtr = nullptr;
+
 	SceneGame();
 	~SceneGame() override = default;
-
 
 	const std::list<Zombie*> GetZombies() const
 	{

@@ -15,14 +15,17 @@ protected:
 	sf::Vector2f direction;
 	sf::Vector2f look;
 
-	float speed = 500.f;
+	float speed = 300.f;
 
-	SceneGame* sceneGame = nullptr;
 
 	HitBox hitBox;
 
 	std::list<Bullet*> bulletList;
 	std::list<Bullet*> bulletPool;
+
+
+	int hp = 0;
+	int maxHp = 100;
 
 	int level = 1;
 	float exp = 0.f;
@@ -30,8 +33,10 @@ protected:
 
 	float showPer = 0.f;
 public:
-	float getPer() const { return showPer; }
+	SceneGame* sceneGame = nullptr;
 
+	float getPer() const { return showPer; }
+	bool isAlive() const { return hp > 0; }
 	Player(const std::string& name = "");
 	~Player() override = default;
 
@@ -60,7 +65,8 @@ public:
 	{
 		return body.getGlobalBounds();
 	}
-
+	const HitBox& GetHitBox() const { return hitBox; }
 	void Shoot();
+	void OnDamage(int d);
 };
 

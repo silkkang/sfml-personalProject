@@ -1,7 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "HitBox.h"
-
+#include "SceneGame.h"
 class Player;
 class SpriteGo;
 class TileMap;
@@ -30,12 +30,12 @@ public:
 	
 protected:
 	Types type = Types::Bloater;
-
+	SceneGame* sceneGame = nullptr;
 	sf::Sprite body;
 	std::string texId;
 
 	sf::Vector2f direction;
-
+	float attackTimer =0.f;
 	int maxHp = 0;
 	float speed = 0.f;
 	int damage = 0;
@@ -50,6 +50,9 @@ protected:
 public:
 	Zombie(const std::string& name = "");
 	virtual ~Zombie() = default;
+
+	int GetHp() const { return hp; }
+	int GetMaxHp() const { return maxHp; }
 
 	void SetPosition(const sf::Vector2f& pos) override;
 	void SetRotation(float rot) override;

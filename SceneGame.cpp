@@ -29,6 +29,9 @@ void SceneGame::Init()
 
 	player = (Player*)AddGameObject(new Player("Player"));
 
+	tilemapPtr = &tilemap;
+	player->sceneGame = this;
+
 	for (int i = 0; i < 100; ++i)
 	{
 		Zombie* zombie = (Zombie*)AddGameObject(new Zombie());
@@ -54,11 +57,8 @@ void SceneGame::Enter()
 	uiView.setSize(windowSize);
 	uiView.setCenter(windowSize * 0.5f);
 
-	float centerX = tilemap.GetMapWidth() * tilemap.GetTileWidth() * 0.5f;
-	float centerY = tilemap.GetMapHeight() * tilemap.GetTileHeight() * 0.5f;
-
 	
-	player->SetPosition({ centerX, centerY });
+	player->SetPosition({ 0.f,0.f });
 	std::cout << "Player Pos = " << player->GetPosition().x << ", " << player->GetPosition().y << std::endl;
 	Scene::Enter();
 	SpawnZombies(1000);
@@ -114,6 +114,7 @@ void SceneGame::Draw(sf::RenderWindow& window)
 
 void SceneGame::SpawnZombies(int count)
 {
+
 	for (int i = 0; i < count; ++i)//
 	{
 		Zombie* zombie = nullptr;
@@ -128,11 +129,21 @@ void SceneGame::SpawnZombies(int count)
 			zombiePool.pop_front();
 			zombie->SetActive(true);
 		}
+	
 		zombie->SetType((Zombie::Types)Utils::RandomRange(0, Zombie::TotalTypes));
-		zombie->SetPosition(sf::Vector2f(
-			Utils::RandomRange(0.f, 3840.f),
-			Utils::RandomRange(0.f, 6400.f)
-		));
+		sf::Vector2f spawnPos;
+		int spawnTile = 0;
+
+		do
+		{
+			spawnPos = {
+				Utils::RandomRange(0.f, 3840.f),
+				Utils::RandomRange(0.f, 6400.f)
+			};
+			spawnTile = tilemapPtr->IsSpawn(spawnPos);
+
+		} while (spawnTile == 5|| spawnTile ==2);
+		zombie->SetPosition(spawnPos);
 		zombie->Reset();
 		
 		zombieList.push_back(zombie);

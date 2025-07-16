@@ -36,6 +36,9 @@ bool TileMap::Load(const std::string& tmxFile, const std::string& tilesetFile, i
     std::string csv = data.text().as_string();
     std::stringstream ss(csv);
 
+    tileData.clear();
+    tileData.resize(mapHeight, std::vector<int>(mapWidth, 0));
+
     int i = 0;
     std::string value;
     while (std::getline(ss, value, ','))
@@ -72,6 +75,8 @@ bool TileMap::Load(const std::string& tmxFile, const std::string& tilesetFile, i
         vertices.append(quad[1]);
         vertices.append(quad[2]);
         vertices.append(quad[3]);
+
+        tileData[y][x] = gid;
     }
 
     return true;
@@ -86,3 +91,24 @@ void TileMap::Draw(sf::RenderWindow& window)
     window.draw(vertices, states);
 }
 
+bool TileMap::IsBlocked(sf::Vector2f& pos)
+{
+    int x = static_cast<int>(pos.x) / tileWidth;
+    int y = static_cast<int>(pos.y) / tileHeight;
+
+    if (x < 0 || y < 0 || x >= mapWidth || y >= mapHeight)
+        return true; 
+
+    return tileData[y][x] == 2;
+}
+
+int TileMap::IsSpawn(const sf::Vector2f& pos)
+{
+    int x = static_cast<int>(pos.x) / tileWidth;
+    int y = static_cast<int>(pos.y) / tileHeight;
+
+    if (x < 0 || y < 0 || x >= mapWidth || y >= mapHeight)
+        return -1;
+
+    return tileData[y][x];
+}

@@ -61,7 +61,7 @@ void Zombie::Reset()
 	hitbox.SetActive(true);
 	body.setTexture(TEXTURE_MGR.Get(texId), true);
 	SetOrigin(Origins::MC);
-
+	sceneGame = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
 	spawnPos = GetPosition();
 
 
@@ -85,6 +85,7 @@ void Zombie::Update(float dt)
 	sf::Vector2f toSpawn = spawnPos - GetPosition();
 	float spawnDist = Utils::Length(toSpawn);
 
+
 	switch (state)
 	{
 	case ZombieState::Patrol:
@@ -98,7 +99,11 @@ void Zombie::Update(float dt)
 		{
 			direction = Utils::GetNormal(patrolTarget - GetPosition());
 			SetRotation(Utils::Angle(direction));
-			SetPosition(GetPosition() + direction * speed * dt);
+			
+		}
+		else
+		{
+			direction = { 0.f, 0.f };
 		}
 		if(playerDist <= 250.f)
 			state = ZombieState::Chase;
@@ -107,13 +112,13 @@ void Zombie::Update(float dt)
 		if (playerDist > 250.f || spawnDist > 300.f)
 		{
 			state = ZombieState::Return;
-
+			direction = { 0.f, 0.f };
 		}
 		else
 		{
 			direction = Utils::GetNormal(toPlayer);
 			SetRotation(Utils::Angle(direction));
-			SetPosition(GetPosition() + direction * speed * dt);
+			
 		}
 		break;
 	case ZombieState::Return:
@@ -121,17 +126,39 @@ void Zombie::Update(float dt)
 		{
 			state = ZombieState::Patrol;
 			patrolTimer = 0.f;
+			direction = { 0.f, 0.f };
 		}
 		else
 		{
 			direction = Utils::GetNormal(toSpawn);
 			SetRotation(Utils::Angle(direction));
-			SetPosition(GetPosition() + direction * speed * dt);
+			
 		}
 		
 		break;
 	}
 
+	sf::Vector2f nextPos = position;
+	sf::Vector2f move = direction * speed * dt;
+	//2번타일 충돌
+	sf::Vector2f testPosX = nextPos + sf::Vector2f(direction.x * speed * dt, 0.f);
+	if (!sceneGame->tilemapPtr->IsBlocked(testPosX))
+		nextPos.x = testPosX.x;
+
+
+	sf::Vector2f testPosY = nextPos + sf::Vector2f(0.f, direction.y * speed * dt);
+	if (!sceneGame->tilemapPtr->IsBlocked(testPosY))
+		nextPos.y = testPosY.y;
+
+	SetPosition(nextPos);
+
+	attackTimer += dt;
+	if (attackTimer > attackInterval) {
+		if (Utils::CheckCollision(hitbox.rect, player->GetHitBox().rect)) {
+			player->OnDamage(damage);
+			attackTimer = 0.f;
+		}
+	}
 	hitbox.UpdateTransform(body, GetLocalBounds());
 	
 }
@@ -151,21 +178,21 @@ void Zombie::SetType(Types type)
 		texId = "graphics/bloater.png";
 		maxHp = 200;
 		speed = 50;
-		damage = 100.f;
+		damage = 10.f;
 		attackInterval = 1.f;
 		break;
 	case Types::Chaser:
 		texId = "graphics/chaser.png";
 		maxHp = 100;
 		speed = 100.f;
-		damage = 100.f;
+		damage = 5.f;
 		attackInterval = 1.f;
 		break;
 	case Types::Crawler:
 		texId = "graphics/crawler.png";
 		maxHp = 50;
 		speed = 200;
-		damage = 100.f;
+		damage = 5.f;
 		attackInterval = 1.f;
 		break;
 	}
@@ -173,11 +200,12 @@ void Zombie::SetType(Types type)
 void Zombie::OnDamage(int d)
 {
 	hp = Utils::Clamp(hp - d, 0, maxHp);
-
+	std::cout << "좀비의 체력 : " << hp << std::endl;
 	if (hp <= 0)
 	{
 		OnDie();
 	}
+
 
 }
 
