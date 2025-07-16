@@ -4,12 +4,12 @@
 
 class Player;
 class Zombie;
+class TileMap;
 
 class SceneGame : public Scene
 {
 protected:
 	Player* player = nullptr;
-
 	std::list<Zombie*> zombieList;
 	std::list<Zombie*> zombiePool;
 

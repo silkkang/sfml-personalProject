@@ -4,6 +4,7 @@
 #include "TileMap.h"
 #include "Zombie.h"
 
+
 SceneGame::SceneGame() 
 	: Scene(SceneIds::Game)
 {
@@ -20,12 +21,12 @@ void SceneGame::Init()
 	texIds.push_back("graphics/Trajectile.png");
 	texIds.push_back("graphics/blood.png");
 	
-	if (!tilemap.Load("map/untitled.tmx", "map/back3.png", 1026))
-	{
-		std::cout << "Failed to load tilemap!" << std::endl;
-	}
 
+
+	if (!tilemap.Load("map/untitled.tmx", "map/imagetile.png", 1))
+		std::cout << "Failed to load tilemap!" << std::endl;
 	tilemap.setPosition(0.f, 0.f);
+
 	player = (Player*)AddGameObject(new Player("Player"));
 
 	for (int i = 0; i < 100; ++i)
@@ -43,6 +44,8 @@ void SceneGame::Enter()
 {
 	FRAMEWORK.GetWindow().setMouseCursorVisible(false);
 
+	
+
 	sf::Vector2f windowSize = FRAMEWORK.GetWindowSizeF();
 
 	gameView.setSize(windowSize);
@@ -50,7 +53,13 @@ void SceneGame::Enter()
 
 	uiView.setSize(windowSize);
 	uiView.setCenter(windowSize * 0.5f);
-	player->SetPosition({ 500.f, 500.f });
+
+	float centerX = tilemap.GetMapWidth() * tilemap.GetTileWidth() * 0.5f;
+	float centerY = tilemap.GetMapHeight() * tilemap.GetTileHeight() * 0.5f;
+
+	
+	player->SetPosition({ centerX, centerY });
+	std::cout << "Player Pos = " << player->GetPosition().x << ", " << player->GetPosition().y << std::endl;
 	Scene::Enter();
 	SpawnZombies(1000);
 	cursor.setTexture(TEXTURE_MGR.Get("graphics/crosshair.png"));
@@ -75,9 +84,11 @@ void SceneGame::Update(float dt)
 {
 	cursor.setPosition(ScreenToUi(InputMgr::GetMousePosition()));
 
+
 	Scene::Update(dt);
 
 	gameView.setCenter(player->GetPosition());
+	worldView = gameView;
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::Space))
 	{
@@ -93,14 +104,12 @@ void SceneGame::Update(float dt)
 void SceneGame::Draw(sf::RenderWindow& window)
 {
 	window.setView(gameView);
-	tilemap.Draw(window); 
+	tilemap.Draw(window);
 
 	Scene::Draw(window);
 
 	window.setView(uiView);
 	window.draw(cursor);
-	std::cout << "SceneGame::Draw Called" << std::endl;
-	std::cout << "Player Pos = " << player->GetPosition().x << ", " << player->GetPosition().y << std::endl;
 }
 
 void SceneGame::SpawnZombies(int count)
@@ -121,8 +130,8 @@ void SceneGame::SpawnZombies(int count)
 		}
 		zombie->SetType((Zombie::Types)Utils::RandomRange(0, Zombie::TotalTypes));
 		zombie->SetPosition(sf::Vector2f(
-			Utils::RandomRange(-2500.f, 2500.f),
-			Utils::RandomRange(-2500.f, 2500.f)
+			Utils::RandomRange(0.f, 3840.f),
+			Utils::RandomRange(0.f, 6400.f)
 		));
 		zombie->Reset();
 		

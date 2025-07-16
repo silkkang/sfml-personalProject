@@ -1,0 +1,44 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "untitled.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "fileStates": {
+        "imagetile.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "imagetiles.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "untitled.tmx": {
+            "scale": 0.0625,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 3600,
+                "y": 2400
+            }
+        }
+    },
+    "last.externalTilesetPath": "C:/Users/KGA/Desktop/personalProject/sfml-zombie-bin/map",
+    "last.imagePath": "C:/Users/KGA/Desktop/personalProject/sfml-zombie-bin/map",
+    "map.height": 200,
+    "map.lastUsedFormat": "tmx",
+    "map.width": 120,
+    "openFiles": [
+        "untitled.tmx",
+        "imagetile.tsx"
+    ],
+    "project": "projectmap.tiled-project",
+    "recentFiles": [
+        "imagetile.tsx",
+        "untitled.tmx",
+        "imagetiles.tsx"
+    ],
+    "tileset.lastUsedFormat": "tsx"
+}
