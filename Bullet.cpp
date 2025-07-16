@@ -75,6 +75,34 @@ void Bullet::Update(float dt)
 		SetActive(false);
 		RemoveBulletTime = 0.f;
 	}
+	direction.x = InputMgr::GetAxis(Axis::Horizontal);
+	direction.y = InputMgr::GetAxis(Axis::Vertical);
+	if (Utils::Magnitude(direction) > 1.f)
+	{
+		Utils::Normalize(direction);
+	}
+	sf::Vector2f nextPos = position;
+
+	sf::Vector2f testPosX = nextPos + sf::Vector2f(direction.x * speed * dt, 0.f);
+	if (!sceneGame->tilemapPtr->IsBlocked(testPosX))
+	{
+		nextPos.x = testPosX.x;
+	}
+	else
+	{
+		speed = 0;
+	}
+	sf::Vector2f testPosY = nextPos + sf::Vector2f(0.f, direction.y * speed * dt);
+	if (!sceneGame->tilemapPtr->IsBlocked(testPosY))
+	{
+		nextPos.y = testPosY.y;
+
+	}
+	else
+	{
+		speed = 0;
+	}
+
 	SetPosition(position + dir * speed * dt);
 	hitBox.UpdateTransform(body, GetLocalBounds());
 
@@ -95,8 +123,12 @@ void Bullet::Update(float dt)
 
 void Bullet::Draw(sf::RenderWindow& window)
 {
-	window.draw(body);
-	hitBox.Draw(window);
+	if (speed > 0)
+	{
+		window.draw(body);
+		hitBox.Draw(window);
+	}
+
 }
 
 void Bullet::Fire(const sf::Vector2f& pos, const sf::Vector2f& dir, float s, int d)

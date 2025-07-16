@@ -84,7 +84,7 @@ void Player::Reset()
 	level = 1;
 	exp = 0.f;
 	nextExp = 100.f;
-	speed = 500.f;
+	speed = 300.f;
 }
 
 void Player::Update(float dt)

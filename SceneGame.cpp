@@ -61,7 +61,7 @@ void SceneGame::Enter()
 	player->SetPosition({ 0.f,0.f });
 	std::cout << "Player Pos = " << player->GetPosition().x << ", " << player->GetPosition().y << std::endl;
 	Scene::Enter();
-	SpawnZombies(1000);
+	SpawnZombies(200);
 	cursor.setTexture(TEXTURE_MGR.Get("graphics/crosshair.png"));
 	Utils::SetOrigin(cursor, Origins::MC);
 }
@@ -92,7 +92,7 @@ void SceneGame::Update(float dt)
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::Space))
 	{
-		SpawnZombies(1000);
+		SpawnZombies(100);
 	}
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::Return))

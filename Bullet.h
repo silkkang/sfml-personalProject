@@ -17,7 +17,7 @@ protected:
 	float RemoveBulletTime = 0.f;
 
 	bool isRemove = false;
-
+	sf::Vector2f direction;
 	HitBox hitBox;
 
 	SceneGame* sceneGame;
