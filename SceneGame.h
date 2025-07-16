@@ -5,12 +5,13 @@
 class Player;
 class Zombie;
 class TileMap;
+class UiHud;
 
 class SceneGame : public Scene
 {
 protected:
 	Player* player = nullptr;
-
+	UiHud* hud = nullptr;
 	std::list<Zombie*> zombieList;
 	std::list<Zombie*> zombiePool;
 

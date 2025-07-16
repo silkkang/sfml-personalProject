@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "TileMap.h"
 #include "Zombie.h"
+#include "UiHud.h"
 
 
 SceneGame::SceneGame() 
@@ -28,6 +29,7 @@ void SceneGame::Init()
 	tilemap.setPosition(0.f, 0.f);
 
 	player = (Player*)AddGameObject(new Player("Player"));
+	hud = (UiHud*)AddGameObject(new UiHud("UiHud"));
 
 	tilemapPtr = &tilemap;
 	player->sceneGame = this;
@@ -51,6 +53,7 @@ void SceneGame::Enter()
 
 	sf::Vector2f windowSize = FRAMEWORK.GetWindowSizeF();
 
+	hud->SetPosition({ windowSize.x * 0.1f, windowSize.y +10.f });
 	gameView.setSize(windowSize);
 	gameView.setCenter({0.f, 0.f});
 
@@ -110,6 +113,7 @@ void SceneGame::Draw(sf::RenderWindow& window)
 
 	window.setView(uiView);
 	window.draw(cursor);
+	hud->Draw(window);
 }
 
 void SceneGame::SpawnZombies(int count)

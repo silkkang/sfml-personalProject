@@ -13,6 +13,12 @@ protected:
 	std::string fontId;
 	sf::RectangleShape expBar;
 	sf::Vector2f expBarSize;
+
+	sf::RectangleShape HpBar;
+	sf::Vector2f HpBarSize;
+
+	sf::ConvexShape LevelShape;
+
 public:
 	UiHud(const std::string& name = "");
 	virtual ~UiHud() = default;
