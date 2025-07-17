@@ -10,6 +10,11 @@ Player::Player(const std::string& name)
 
 }
 
+int Player::GetLevel()
+{
+	return level;
+}
+
 void Player::SetPosition(const sf::Vector2f& pos)
 {
 	GameObject::SetPosition(pos);
@@ -86,14 +91,16 @@ void Player::Reset()
 	exp = 0.f;
 	nextExp = 100.f;
 	speed = 300.f;
-
+	skillRight = 0.f;
+	skillLeft = 0.f;
+	skillRightCount = 0;
 	if (sceneGame && sceneGame->hud)
 	{
 		sceneGame->hud->SetLevel(level);
 	}
 	if (sceneGame && sceneGame->hud)
 	{
-		sceneGame->hud->SetExp(exp,nextExp);
+		sceneGame->hud->SetExp(exp, nextExp);
 	}
 }
 
@@ -144,14 +151,102 @@ void Player::Update(float dt)
 
 	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
 	{
-		Shoot();
+		if (isSkillLeft) return;
+		if (isSkillRight) return;
+		isSkillLeft = true;
 	}
+	if (isSkillLeft)
+	{
+		skillLeft -= dt;
+		if (skillLeft <= 0)
+		{
+			Bullet* bullet = nullptr;
+			showPer = (exp / nextExp) * 100.f;
+
+
+			if (bulletPool.empty())
+			{
+				bullet = new Bullet();
+				bullet->Init();
+			}
+			else
+			{
+				bullet = bulletPool.front();
+				bulletPool.pop_front();
+				bullet->SetActive(true);
+			}
+
+			bullet->Reset();
+			bullet->Fire(position + look * 10.f, look, 1000.f, 10);
+			bulletList.push_back(bullet);
+			sceneGame->AddGameObject(bullet);
+
+			skillLeft = 2.f;
+		}
+		if (InputMgr::GetMouseButtonUp(sf::Mouse::Left))
+		{
+			isSkillLeft = false;
+		}
+	}
+	skillLeft -= dt;
 	if (InputMgr::GetMouseButtonDown(sf::Mouse::Right))
 	{
-		for(int i=0;i<)
-		Shoot();
-		Shoot();
+
+		if (!isSkillRight && skillRight <= 0.f)
+		{
+			skillRightCount = 0;
+			skillRight = 0.f;
+			isSkillRight = true;
+		}
+	
 	}
+	if (isSkillRight)
+	{
+		skillRight -= dt;
+		if (skillRight <= 0)
+		{
+			Bullet* bullet = nullptr;
+			showPer = (exp / nextExp) * 100.f;
+
+
+			if (bulletPool.empty())
+			{
+				bullet = new Bullet();
+				bullet->Init();
+			}
+			else
+			{
+				bullet = bulletPool.front();
+				bulletPool.pop_front();
+				bullet->SetActive(true);
+			}
+
+			bullet->Reset();
+			bullet->Fire(position + look * 10.f, look, 1000.f, 8);
+			bulletList.push_back(bullet);
+			sceneGame->AddGameObject(bullet);
+
+			skillRightCount++;
+			if (skillRightCount >= 5)
+			{
+				isSkillRight = false;
+				skillRight = 5.f;
+			}
+			else
+			{
+				skillRight = 0.1f;
+			}
+
+		}
+
+
+	}
+	else if (skillRight > 0.f)
+	{
+		skillRight -= dt;
+	}
+
+	std::cout << skillRight << std::endl;
 	if (exp > nextExp) {
 		level++;
 		exp -= nextExp;
@@ -184,34 +279,30 @@ void Player::Draw(sf::RenderWindow& window)
 	hitBox.Draw(window);
 }
 
-void Player::Shoot()
-{
-	Bullet* bullet = nullptr;
-	std::cout << "플레이어의 레벨 : " << level << std::endl;
-	std::cout << "플레이어의 경험치 : " << exp << " / " << nextExp << std::endl;
-	std::cout << "플레이어의 경험치 퍼센트 : " << showPer << std::endl;
-	std::cout << level << " " << exp << std::endl;
-	showPer = (exp / nextExp) * 100.f;
-	
-
-	if (bulletPool.empty())
-	{
-		bullet = new Bullet();
-		bullet->Init();
-	}
-	else
-	{
-		bullet = bulletPool.front();
-		bulletPool.pop_front();
-		bullet->SetActive(true);
-	}
-
-	bullet->Reset();
-	bullet->Fire(position + look * 10.f, look, 1000.f, 10);
-
-	bulletList.push_back(bullet);
-	sceneGame->AddGameObject(bullet);
-}
+//void Player::Shoot1()
+//{
+//	Bullet* bullet = nullptr;
+//	showPer = (exp / nextExp) * 100.f;
+//
+//
+//	if (bulletPool.empty())
+//	{
+//		bullet = new Bullet();
+//		bullet->Init();
+//	}
+//	else
+//	{
+//		bullet = bulletPool.front();
+//		bulletPool.pop_front();
+//		bullet->SetActive(true);
+//	}
+//
+//	bullet->Reset();
+//	bullet->Fire(position + look * 10.f, look, 1000.f, 10);
+//
+//	bulletList.push_back(bullet);
+//	sceneGame->AddGameObject(bullet);
+//}
 
 void Player::OnDamage(int d) {
 	if (!isAlive()) return;
@@ -225,4 +316,5 @@ void Player::OnDamage(int d) {
 	if (!isAlive()) {
 		SCENE_MGR.ChangeScene(SceneIds::Game);
 	}
+
 }

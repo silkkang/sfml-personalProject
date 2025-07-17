@@ -31,6 +31,7 @@ protected:
 	sf::Sprite mouseRight;
 	sf::Sprite skillE;
 	sf::Sprite skillR;
+	sf::Sprite rock;
 
 
 public:

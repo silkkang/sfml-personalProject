@@ -35,6 +35,12 @@ protected:
 	float showPer = 0.f;
 
 	float skillRight = 0.f;
+	bool isSkillRight = false;
+	int skillRightCount = 0;
+
+	float skillLeft = 0.f;
+	bool isSkillLeft = false;
+
 public:
 	SceneGame* sceneGame = nullptr;
 
@@ -47,7 +53,7 @@ public:
 
 	void AddExp(float f) { exp += f; }
 	void AddMoney(float f) { money += f; }
-
+	int GetLevel();
 	void SetPosition(const sf::Vector2f& pos) override;
 	void SetRotation(float rot) override;
 	void SetScale(const sf::Vector2f& s) override;
@@ -70,7 +76,6 @@ public:
 		return body.getGlobalBounds();
 	}
 	const HitBox& GetHitBox() const { return hitBox; }
-	void Shoot();
 	void OnDamage(int d);
 };
 

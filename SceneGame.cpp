@@ -26,6 +26,7 @@ void SceneGame::Init()
 	texIds.push_back("graphics/mouseRight.png");
 	texIds.push_back("graphics/skillE.png");
 	texIds.push_back("graphics/skillR.png");
+	texIds.push_back("graphics/rock.png");
 
 	if (!tilemap.Load("map/untitled.tmx", "map/imagetile.png", 1))
 		std::cout << "Failed to load tilemap!" << std::endl;
@@ -95,6 +96,11 @@ void SceneGame::Enter()
 	skillR.setOrigin(mouseLeft.getLocalBounds().width * 0.5f, mouseLeft.getLocalBounds().height * 0.5f);
 	skillR.setPosition({ windowSize.x * 0.575f, windowSize.y - 50 });
 	skillR.setScale(0.5f, 0.5f);
+
+	rock.setTexture(TEXTURE_MGR.Get("graphics/rock.png"));
+	rock.setOrigin(mouseLeft.getLocalBounds().width * 0.5f, mouseLeft.getLocalBounds().height * 0.5f);
+	rock.setPosition({ windowSize.x * 0.575f, windowSize.y - 50 });
+	rock.setScale(0.5f, 0.5f);
 }
 
 void SceneGame::Exit()
@@ -146,7 +152,15 @@ void SceneGame::Draw(sf::RenderWindow& window)
 	window.draw(mouseLeft);
 	window.draw(mouseRight);
 	window.draw(skillE);
-	window.draw(skillR);
+	if (player->GetLevel() > 5)
+	{
+		window.draw(skillR);
+	}
+	if (player->GetLevel() <= 5)
+	{
+		window.draw(rock);
+	}
+	
 
 }
 
