@@ -64,6 +64,7 @@ void Zombie::Reset()
 	sceneGame = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
 	spawnPos = GetPosition();
 
+	hp = maxHp;
 
 	SetRotation(0.f);
 	SetScale({ 1.f, 1.f });
@@ -71,6 +72,8 @@ void Zombie::Reset()
 	state = ZombieState::Patrol;
 	patrolTimer = 0.f;
 	patrolTarget = spawnPos;
+	slowTimer = 0.f;
+	originalSpeed = speed;
 }
 
 void Zombie::Update(float dt)
@@ -128,6 +131,11 @@ void Zombie::Update(float dt)
 			patrolTimer = 0.f;
 			direction = { 0.f, 0.f };
 		}
+		else if (playerDist<= 250.f)
+		{
+			state = ZombieState::Chase;
+			direction = { 0.f, 0.f };
+		}
 		else
 		{
 			direction = Utils::GetNormal(toSpawn);
@@ -158,6 +166,15 @@ void Zombie::Update(float dt)
 			player->OnDamage(damage);
 			attackTimer = 0.f;
 		}
+	}
+	if (slowTimer > 0.f)
+	{
+		slowTimer -= dt;
+		speed= slowSpeed;
+	}
+	else
+	{
+		speed = originalSpeed;
 	}
 	hitbox.UpdateTransform(body, GetLocalBounds());
 	
@@ -226,3 +243,10 @@ void Zombie::OnDie()
 	SetActive(false);
 	hitbox.SetActive(false);
 }
+
+void Zombie::Onslow(float slowtimer, float slowspeed)
+{
+	slowTimer = slowtimer;
+	this->slowSpeed = slowspeed;
+}
+

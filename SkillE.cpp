@@ -1,38 +1,37 @@
 #include "stdafx.h"
-#include "Bullet.h"
+#include "SkillE.h"
 #include "SceneGame.h"
 #include "Zombie.h"
-
-Bullet::Bullet(const std::string& name)
+SkillE::SkillE(const std::string& name)
 	: GameObject(name)
 {
 }
 
-void Bullet::SetPosition(const sf::Vector2f& pos)
+void SkillE::SetPosition(const sf::Vector2f& pos)
 {
 	GameObject::SetPosition(pos);
 	body.setPosition(pos);
 }
 
-void Bullet::SetRotation(float rot)
+void SkillE::SetRotation(float rot)
 {
 	GameObject::SetRotation(rot);
 	body.setRotation(rot);
 }
 
-void Bullet::SetScale(const sf::Vector2f& s)
+void SkillE::SetScale(const sf::Vector2f& s)
 {
 	GameObject::SetScale(s);
 	body.setScale(s);
 }
 
-void Bullet::SetOrigin(const sf::Vector2f& o)
+void SkillE::SetOrigin(const sf::Vector2f& o)
 {
 	GameObject::SetOrigin(o);
 	body.setOrigin(o);
 }
 
-void Bullet::SetOrigin(Origins preset)
+void SkillE::SetOrigin(Origins preset)
 {
 	GameObject::SetOrigin(preset);
 	if (preset != Origins::Custom)
@@ -41,17 +40,17 @@ void Bullet::SetOrigin(Origins preset)
 	}
 }
 
-void Bullet::Init()
+void SkillE::Init()
 {
-	sortingLayer = SortingLayers::Foreground;
+	sortingLayer = SortingLayers::Background;
 	sortingOrder = 1;
 }
 
-void Bullet::Release()
+void SkillE::Release()
 {
 }
 
-void Bullet::Reset()
+void SkillE::Reset()
 {
 	sceneGame = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
 
@@ -68,10 +67,10 @@ void Bullet::Reset()
 	damage = 0;
 }
 
-void Bullet::Update(float dt)
+void SkillE::Update(float dt)
 {
 	RemoveBulletTime += dt;
-	if (RemoveBulletTime >= 0.5f) {
+	if (RemoveBulletTime >= 3.f) {
 		SetActive(false);
 		RemoveBulletTime = 0.f;
 	}
@@ -115,23 +114,19 @@ void Bullet::Update(float dt)
 			//zombie->SetActive(false);
 			SetActive(false);
 			zombie->OnDamage(damage);
-
+			zombie->Onslow(3.f, 0.f);
 			break;
 		}
 	}
 }
 
-void Bullet::Draw(sf::RenderWindow& window)
+void SkillE::Draw(sf::RenderWindow& window)
 {
-	if (speed > 0)
-	{
-		window.draw(body);
-		hitBox.Draw(window);
-	}
-
+	window.draw(body);
+	hitBox.Draw(window);
 }
 
-void Bullet::Fire(const sf::Vector2f& pos, const sf::Vector2f& dir, float s, int d)
+void SkillE::Fire(const sf::Vector2f& pos, const sf::Vector2f& dir, float s, int d)
 {
 	SetPosition(pos);
 	this->dir = dir;
@@ -139,4 +134,5 @@ void Bullet::Fire(const sf::Vector2f& pos, const sf::Vector2f& dir, float s, int
 	damage = d;
 
 	SetRotation(Utils::Angle(this->dir));
+	
 }

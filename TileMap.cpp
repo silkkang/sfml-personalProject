@@ -21,18 +21,8 @@ bool TileMap::Load(const std::string& tmxFile, const std::string& tilesetFile, i
     vertices.setPrimitiveType(sf::Quads);
 
     auto layer = mapNode.child("layer");
-    if (!layer)
-    {
-        std::cout << "레이어 못 찾음" << std::endl;
-        return false;
-    }
-
     auto data = layer.child("data");
-    if (!data)
-    {
-        std::cout << "데이터 못 찾음" << std::endl;
-        return false;
-    }
+  
     std::string csv = data.text().as_string();
     std::stringstream ss(csv);
 

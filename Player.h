@@ -4,6 +4,8 @@
 
 class SceneGame;
 class Bullet;
+class SkillE;
+class SkillR;
 class TileMap;
 
 class Player : public GameObject
@@ -23,6 +25,11 @@ protected:
 	std::list<Bullet*> bulletList;
 	std::list<Bullet*> bulletPool;
 
+	std::list<SkillE*> skillEList;
+	std::list<SkillE*> skillEPool;
+
+	std::list<SkillR*> skillRList;
+	std::list<SkillR*> skillRPool;
 
 	int hp = 0;
 	int maxHp = 100;
@@ -41,6 +48,15 @@ protected:
 	float skillLeft = 0.f;
 	bool isSkillLeft = false;
 
+	float skillE = 0.f;
+	bool isSkillE = false;
+
+	float skillR = 0.f;
+	bool isSkillR = false;
+	sf::Vector2f pos;//position
+	sf::Vector2f dir;//direction
+	float s;//speed
+	int d;//damage
 public:
 	SceneGame* sceneGame = nullptr;
 
@@ -76,6 +92,9 @@ public:
 		return body.getGlobalBounds();
 	}
 	const HitBox& GetHitBox() const { return hitBox; }
+	void Shoot();
+	void SkillEUse();
+	void SkillRUse();
 	void OnDamage(int d);
 };
 

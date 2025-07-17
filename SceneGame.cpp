@@ -27,6 +27,8 @@ void SceneGame::Init()
 	texIds.push_back("graphics/skillE.png");
 	texIds.push_back("graphics/skillR.png");
 	texIds.push_back("graphics/rock.png");
+	texIds.push_back("graphics/Emotion.png");
+	texIds.push_back("graphics/Rmotion.png");
 
 	if (!tilemap.Load("map/untitled.tmx", "map/imagetile.png", 1))
 		std::cout << "Failed to load tilemap!" << std::endl;
@@ -131,7 +133,6 @@ void SceneGame::Update(float dt)
 	{
 		SpawnZombies(100);
 	}
-
 	if (InputMgr::GetKeyDown(sf::Keyboard::Return))
 	{
 		SCENE_MGR.ChangeScene(SceneIds::Game);

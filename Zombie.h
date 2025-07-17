@@ -38,9 +38,11 @@ protected:
 	float attackTimer =0.f;
 	int maxHp = 0;
 	float speed = 0.f;
+	float originalSpeed = 0.f;
 	int damage = 0;
 	float attackInterval = 0.f;
-
+	float slowTimer = 0.f;
+	float slowSpeed = 0.f;
 	int hp;
 
 	Player* player = nullptr;
@@ -81,5 +83,7 @@ public:
 	const HitBox& GetHitBox() const { return hitbox; }
 	void OnDamage(int d);
 	void OnDie();
+	void Onslow(float slowtimer, float slowspeed);
+
 };
 
