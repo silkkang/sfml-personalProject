@@ -11,7 +11,6 @@ class SceneGame : public Scene
 {
 protected:
 	Player* player = nullptr;
-	UiHud* hud = nullptr;
 	std::list<Zombie*> zombieList;
 	std::list<Zombie*> zombiePool;
 
@@ -26,8 +25,11 @@ protected:
 
 	sf::RenderTexture miniMapTexture;
 	sf::Sprite miniMapSprite;
+
+	sf::Sprite MoneyIcon;
 public:
 	TileMap* tilemapPtr = nullptr;
+	UiHud* hud = nullptr;
 
 	SceneGame();
 	~SceneGame() override = default;

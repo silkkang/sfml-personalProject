@@ -6,7 +6,7 @@
 #include "UiHud.h"
 
 
-SceneGame::SceneGame() 
+SceneGame::SceneGame()
 	: Scene(SceneIds::Game)
 {
 }
@@ -21,8 +21,7 @@ void SceneGame::Init()
 	texIds.push_back("graphics/crosshair.png");
 	texIds.push_back("graphics/Trajectile.png");
 	texIds.push_back("graphics/blood.png");
-	
-
+	texIds.push_back("graphics/moneyicon.png");
 
 	if (!tilemap.Load("map/untitled.tmx", "map/imagetile.png", 1))
 		std::cout << "Failed to load tilemap!" << std::endl;
@@ -49,24 +48,28 @@ void SceneGame::Enter()
 {
 	FRAMEWORK.GetWindow().setMouseCursorVisible(false);
 
-	
+
 
 	sf::Vector2f windowSize = FRAMEWORK.GetWindowSizeF();
 
-	hud->SetPosition({ windowSize.x * 0.1f, windowSize.y +10.f });
+	hud->SetPosition({ windowSize.x * 0.1f, windowSize.y + 10.f });
 	gameView.setSize(windowSize);
-	gameView.setCenter({0.f, 0.f});
+	gameView.setCenter({ 0.f, 0.f });
 
 	uiView.setSize(windowSize);
 	uiView.setCenter(windowSize * 0.5f);
 
-	
+
 	player->SetPosition({ 0.f,0.f });
-	std::cout << "Player Pos = " << player->GetPosition().x << ", " << player->GetPosition().y << std::endl;
 	Scene::Enter();
 	SpawnZombies(200);
 	cursor.setTexture(TEXTURE_MGR.Get("graphics/crosshair.png"));
 	Utils::SetOrigin(cursor, Origins::MC);
+
+	MoneyIcon.setTexture(TEXTURE_MGR.Get("graphics/moneyicon.png"));
+	MoneyIcon.setOrigin(MoneyIcon.getLocalBounds().width * 0.5f, MoneyIcon.getLocalBounds().height * 0.5f);
+	MoneyIcon.setPosition(300.f, 665.f);
+	MoneyIcon.setScale(0.15f,0.15f);
 }
 
 void SceneGame::Exit()
@@ -114,12 +117,13 @@ void SceneGame::Draw(sf::RenderWindow& window)
 	window.setView(uiView);
 	window.draw(cursor);
 	hud->Draw(window);
+	window.draw(MoneyIcon);
 }
 
 void SceneGame::SpawnZombies(int count)
 {
 
-	for (int i = 0; i < count; ++i)//
+	for (int i = 0; i < count; ++i)
 	{
 		Zombie* zombie = nullptr;
 		if (zombiePool.empty())
@@ -133,7 +137,7 @@ void SceneGame::SpawnZombies(int count)
 			zombiePool.pop_front();
 			zombie->SetActive(true);
 		}
-	
+
 		zombie->SetType((Zombie::Types)Utils::RandomRange(0, Zombie::TotalTypes));
 		sf::Vector2f spawnPos;
 		int spawnTile = 0;
@@ -146,10 +150,10 @@ void SceneGame::SpawnZombies(int count)
 			};
 			spawnTile = tilemapPtr->IsSpawn(spawnPos);
 
-		} while (spawnTile == 5|| spawnTile ==2);
+		} while (spawnTile == 5 || spawnTile == 2);
 		zombie->SetPosition(spawnPos);
 		zombie->Reset();
-		
+
 		zombieList.push_back(zombie);
 	}
 }

@@ -29,6 +29,7 @@ protected:
 
 	int level = 1;
 	float exp = 0.f;
+	float money = 0.f;
 	float nextExp = 100.f;
 
 	float showPer = 0.f;
@@ -43,6 +44,7 @@ public:
 
 
 	void AddExp(float f) { exp += f; }
+	void AddMoney(float f) { money += f; }
 
 	void SetPosition(const sf::Vector2f& pos) override;
 	void SetRotation(float rot) override;

@@ -212,8 +212,8 @@ void Zombie::OnDamage(int d)
 void Zombie::OnDie()
 {
 	if (player != nullptr) {
-		player->AddExp(Utils::RandomRange(1.f, 10.f));
-		
+		player->AddExp(Utils::RandomRange(5.f, 10.f));
+		player->AddMoney(Utils::RandomRange(5.f, 10.f));
 	}
 	Blood* blood = new Blood();
 	blood->SetTexture("graphics/blood.png");

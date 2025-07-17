@@ -2,7 +2,8 @@
 #include "Player.h"
 #include "SceneGame.h"
 #include "Bullet.h"
-
+#include "UiHud.h"
+#include <sstream>
 Player::Player(const std::string& name)
 	: GameObject(name)
 {
@@ -85,6 +86,15 @@ void Player::Reset()
 	exp = 0.f;
 	nextExp = 100.f;
 	speed = 300.f;
+
+	if (sceneGame && sceneGame->hud)
+	{
+		sceneGame->hud->SetLevel(level);
+	}
+	if (sceneGame && sceneGame->hud)
+	{
+		sceneGame->hud->SetExp(exp,nextExp);
+	}
 }
 
 void Player::Update(float dt)
@@ -123,7 +133,7 @@ void Player::Update(float dt)
 		nextPos.y = testPosY.y;
 
 	SetPosition(nextPos);
-	
+
 
 	sf::Vector2i mousePos = InputMgr::GetMousePosition();
 	sf::Vector2f mouseWorldPos = sceneGame->ScreenToWorld(mousePos);
@@ -141,12 +151,11 @@ void Player::Update(float dt)
 		level++;
 		exp -= nextExp;
 		nextExp = 100 * pow(1.15, level - 1);
-		
+
 	}
-	showPer = (exp / nextExp) * 100.f;
 
 
-	
+
 }
 
 void Player::Draw(sf::RenderWindow& window)
@@ -162,6 +171,24 @@ void Player::Shoot()
 	std::cout << "플레이어의 경험치 : " << exp << " / " << nextExp << std::endl;
 	std::cout << "플레이어의 경험치 퍼센트 : " << showPer << std::endl;
 	std::cout << level << " " << exp << std::endl;
+	showPer = (exp / nextExp) * 100.f;
+	if (sceneGame && sceneGame->hud)
+	{
+		sceneGame->hud->SetExpBar((float)showPer / 100);
+	}
+	if (sceneGame && sceneGame->hud)
+	{
+		sceneGame->hud->SetLevel(level);
+	}
+	if (sceneGame && sceneGame->hud)
+	{
+		sceneGame->hud->SetExp(exp,nextExp);
+	}
+	if (sceneGame && sceneGame->hud)
+	{
+		sceneGame->hud->SetMoney(money);
+	}
+
 	if (bulletPool.empty())
 	{
 		bullet = new Bullet();
@@ -185,6 +212,10 @@ void Player::OnDamage(int d) {
 	if (!isAlive()) return;
 
 	hp = Utils::Clamp(hp - d, 0, maxHp);
+	if (sceneGame && sceneGame->hud)
+	{
+		sceneGame->hud->SetHpBar((float)hp / (float)maxHp);
+	}
 	std::cout << "플레이어의 체력 : " << hp << std::endl;
 	if (!isAlive()) {
 		SCENE_MGR.ChangeScene(SceneIds::Game);

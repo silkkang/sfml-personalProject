@@ -8,13 +8,18 @@ class UiHud : public GameObject
 {
 protected:
 	sf::Font font;
-	sf::Vector2f levelBarSize;
+	sf::Text Level;
+	sf::Text Exp;
+	sf::Text Money;
+	
 
 	std::string fontId;
 	sf::RectangleShape expBar;
+	sf::RectangleShape expBarBack;
 	sf::Vector2f expBarSize;
 
 	sf::RectangleShape HpBar;
+	sf::RectangleShape HpBarBack;
 	sf::Vector2f HpBarSize;
 
 	sf::ConvexShape LevelShape;
@@ -29,7 +34,12 @@ public:
 	void SetOrigin(const sf::Vector2f& o) override;
 	void SetOrigin(Origins preset) override;
 
-	void SetExpBar(float value);
+	void SetExpBar(float showPer);
+	void SetHpBar(float hp);
+	void SetLevel(int level);
+	void SetExp(int exp,int nextExp);
+	void SetMoney(int money);
+
 
 	void Init() override;
 	void Release() override;
