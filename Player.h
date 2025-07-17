@@ -33,6 +33,8 @@ protected:
 	float nextExp = 100.f;
 
 	float showPer = 0.f;
+
+	float skillRight = 0.f;
 public:
 	SceneGame* sceneGame = nullptr;
 

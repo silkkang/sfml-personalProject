@@ -146,7 +146,12 @@ void Player::Update(float dt)
 	{
 		Shoot();
 	}
-
+	if (InputMgr::GetMouseButtonDown(sf::Mouse::Right))
+	{
+		for(int i=0;i<)
+		Shoot();
+		Shoot();
+	}
 	if (exp > nextExp) {
 		level++;
 		exp -= nextExp;
@@ -154,7 +159,22 @@ void Player::Update(float dt)
 
 	}
 
-
+	if (sceneGame && sceneGame->hud)
+	{
+		sceneGame->hud->SetExpBar((float)showPer / 100);
+	}
+	if (sceneGame && sceneGame->hud)
+	{
+		sceneGame->hud->SetLevel(level);
+	}
+	if (sceneGame && sceneGame->hud)
+	{
+		sceneGame->hud->SetExp(exp, nextExp);
+	}
+	if (sceneGame && sceneGame->hud)
+	{
+		sceneGame->hud->SetMoney(money);
+	}
 
 }
 
@@ -172,22 +192,7 @@ void Player::Shoot()
 	std::cout << "플레이어의 경험치 퍼센트 : " << showPer << std::endl;
 	std::cout << level << " " << exp << std::endl;
 	showPer = (exp / nextExp) * 100.f;
-	if (sceneGame && sceneGame->hud)
-	{
-		sceneGame->hud->SetExpBar((float)showPer / 100);
-	}
-	if (sceneGame && sceneGame->hud)
-	{
-		sceneGame->hud->SetLevel(level);
-	}
-	if (sceneGame && sceneGame->hud)
-	{
-		sceneGame->hud->SetExp(exp,nextExp);
-	}
-	if (sceneGame && sceneGame->hud)
-	{
-		sceneGame->hud->SetMoney(money);
-	}
+	
 
 	if (bulletPool.empty())
 	{

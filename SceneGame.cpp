@@ -22,6 +22,10 @@ void SceneGame::Init()
 	texIds.push_back("graphics/Trajectile.png");
 	texIds.push_back("graphics/blood.png");
 	texIds.push_back("graphics/moneyicon.png");
+	texIds.push_back("graphics/mouseLeft.png");
+	texIds.push_back("graphics/mouseRight.png");
+	texIds.push_back("graphics/skillE.png");
+	texIds.push_back("graphics/skillR.png");
 
 	if (!tilemap.Load("map/untitled.tmx", "map/imagetile.png", 1))
 		std::cout << "Failed to load tilemap!" << std::endl;
@@ -66,10 +70,31 @@ void SceneGame::Enter()
 	cursor.setTexture(TEXTURE_MGR.Get("graphics/crosshair.png"));
 	Utils::SetOrigin(cursor, Origins::MC);
 
-	MoneyIcon.setTexture(TEXTURE_MGR.Get("graphics/moneyicon.png"));
-	MoneyIcon.setOrigin(MoneyIcon.getLocalBounds().width * 0.5f, MoneyIcon.getLocalBounds().height * 0.5f);
-	MoneyIcon.setPosition(300.f, 665.f);
-	MoneyIcon.setScale(0.15f,0.15f);
+	moneyIcon.setTexture(TEXTURE_MGR.Get("graphics/moneyicon.png"));
+	moneyIcon.setOrigin(moneyIcon.getLocalBounds().width * 0.5f, moneyIcon.getLocalBounds().height * 0.5f);
+	moneyIcon.setPosition(300.f, 665.f);
+	moneyIcon.setScale(0.15f,0.15f);
+
+	
+	mouseLeft.setTexture(TEXTURE_MGR.Get("graphics/mouseLeft.png"));
+	mouseLeft.setOrigin(mouseLeft.getLocalBounds().width * 0.5f, mouseLeft.getLocalBounds().height * 0.5f);
+	mouseLeft.setPosition({ windowSize.x * 0.425f, windowSize.y-50 });
+	mouseLeft.setScale(0.5f, 0.5f);
+
+	mouseRight.setTexture(TEXTURE_MGR.Get("graphics/mouseRight.png"));
+	mouseRight.setOrigin(mouseLeft.getLocalBounds().width * 0.5f, mouseLeft.getLocalBounds().height * 0.5f);
+	mouseRight.setPosition({ windowSize.x * 0.475f, windowSize.y - 50 });
+	mouseRight.setScale(0.5f, 0.5f);
+
+	skillE.setTexture(TEXTURE_MGR.Get("graphics/skillE.png"));
+	skillE.setOrigin(mouseLeft.getLocalBounds().width * 0.5f, mouseLeft.getLocalBounds().height * 0.5f);
+	skillE.setPosition({ windowSize.x * 0.525f, windowSize.y - 50 });
+	skillE.setScale(0.5f, 0.5f);
+	
+	skillR.setTexture(TEXTURE_MGR.Get("graphics/skillR.png"));
+	skillR.setOrigin(mouseLeft.getLocalBounds().width * 0.5f, mouseLeft.getLocalBounds().height * 0.5f);
+	skillR.setPosition({ windowSize.x * 0.575f, windowSize.y - 50 });
+	skillR.setScale(0.5f, 0.5f);
 }
 
 void SceneGame::Exit()
@@ -117,7 +142,12 @@ void SceneGame::Draw(sf::RenderWindow& window)
 	window.setView(uiView);
 	window.draw(cursor);
 	hud->Draw(window);
-	window.draw(MoneyIcon);
+	window.draw(moneyIcon);
+	window.draw(mouseLeft);
+	window.draw(mouseRight);
+	window.draw(skillE);
+	window.draw(skillR);
+
 }
 
 void SceneGame::SpawnZombies(int count)

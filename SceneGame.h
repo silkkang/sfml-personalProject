@@ -26,7 +26,13 @@ protected:
 	sf::RenderTexture miniMapTexture;
 	sf::Sprite miniMapSprite;
 
-	sf::Sprite MoneyIcon;
+	sf::Sprite moneyIcon;
+	sf::Sprite mouseLeft;
+	sf::Sprite mouseRight;
+	sf::Sprite skillE;
+	sf::Sprite skillR;
+
+
 public:
 	TileMap* tilemapPtr = nullptr;
 	UiHud* hud = nullptr;
