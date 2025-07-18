@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "SceneGame.h"
+#include "PlayerUi.h"
 #include "Player.h"
 #include "TileMap.h"
 #include "Zombie.h"
@@ -29,6 +30,7 @@ void SceneGame::Init()
 	texIds.push_back("graphics/rock.png");
 	texIds.push_back("graphics/Emotion.png");
 	texIds.push_back("graphics/Rmotion.png");
+	texIds.push_back("graphics/Characteristic.png");
 
 	if (!tilemap.Load("map/untitled.tmx", "map/imagetile.png", 1))
 		std::cout << "Failed to load tilemap!" << std::endl;
@@ -36,6 +38,10 @@ void SceneGame::Init()
 
 	player = (Player*)AddGameObject(new Player("Player"));
 	hud = (UiHud*)AddGameObject(new UiHud("UiHud"));
+
+
+	playerUi = (PlayerUi*)AddGameObject(new PlayerUi("PlayerUi"));
+	playerUi->SetActive(false);
 
 	tilemapPtr = &tilemap;
 	player->sceneGame = this;
@@ -67,8 +73,12 @@ void SceneGame::Enter()
 	uiView.setCenter(windowSize * 0.5f);
 
 
-	player->SetPosition({ 0.f,0.f });
+	
+
+
 	Scene::Enter();
+
+
 	SpawnZombies(200);
 	cursor.setTexture(TEXTURE_MGR.Get("graphics/crosshair.png"));
 	Utils::SetOrigin(cursor, Origins::MC);
@@ -103,6 +113,8 @@ void SceneGame::Enter()
 	rock.setOrigin(mouseLeft.getLocalBounds().width * 0.5f, mouseLeft.getLocalBounds().height * 0.5f);
 	rock.setPosition({ windowSize.x * 0.575f, windowSize.y - 50 });
 	rock.setScale(0.5f, 0.5f);
+
+
 }
 
 void SceneGame::Exit()
@@ -122,6 +134,12 @@ void SceneGame::Exit()
 void SceneGame::Update(float dt)
 {
 	cursor.setPosition(ScreenToUi(InputMgr::GetMousePosition()));
+	
+	if (playerUi->GetActive())
+	{
+		playerUi->Update(dt);
+		return;
+	}
 
 
 	Scene::Update(dt);
@@ -147,7 +165,7 @@ void SceneGame::Draw(sf::RenderWindow& window)
 	Scene::Draw(window);
 
 	window.setView(uiView);
-	window.draw(cursor);
+	
 	hud->Draw(window);
 	window.draw(moneyIcon);
 	window.draw(mouseLeft);
@@ -161,8 +179,9 @@ void SceneGame::Draw(sf::RenderWindow& window)
 	{
 		window.draw(rock);
 	}
-	
-
+	if (playerUi->GetActive())
+		playerUi->Draw(window);
+	window.draw(cursor);
 }
 
 void SceneGame::SpawnZombies(int count)

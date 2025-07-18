@@ -53,6 +53,8 @@ protected:
 
 	float skillR = 0.f;
 	bool isSkillR = false;
+
+	bool isLevelUp = false;
 	sf::Vector2f pos;//position
 	sf::Vector2f dir;//direction
 	float s;//speed

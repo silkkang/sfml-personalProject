@@ -150,6 +150,7 @@
     <ClCompile Include="Framework\SpriteGo.cpp" />
     <ClCompile Include="Framework\Scene.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerUi.cpp" />
     <ClCompile Include="pugixml.cpp" />
     <ClCompile Include="SceneDev1.cpp" />
     <ClCompile Include="SceneDev2.cpp" />
@@ -180,6 +181,7 @@
     <ClInclude Include="Framework\Scene.h" />
     <ClInclude Include="HitBox.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerUi.h" />
     <ClInclude Include="pugiconfig.hpp" />
     <ClInclude Include="pugixml.hpp" />
     <ClInclude Include="SceneDev1.h" />

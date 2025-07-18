@@ -6,11 +6,13 @@ class Player;
 class Zombie;
 class TileMap;
 class UiHud;
+class PlayerUi;
 
 class SceneGame : public Scene
 {
 protected:
 	Player* player = nullptr;
+
 	std::list<Zombie*> zombieList;
 	std::list<Zombie*> zombiePool;
 
@@ -34,10 +36,13 @@ protected:
 	sf::Sprite skillR;
 	sf::Sprite rock;
 
+	sf::Sprite Charact;
+
 
 public:
 	TileMap* tilemapPtr = nullptr;
 	UiHud* hud = nullptr;
+	PlayerUi* playerUi = nullptr;
 
 	SceneGame();
 	~SceneGame() override = default;

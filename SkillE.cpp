@@ -122,8 +122,11 @@ void SkillE::Update(float dt)
 
 void SkillE::Draw(sf::RenderWindow& window)
 {
-	window.draw(body);
-	hitBox.Draw(window);
+	if (speed > 0)
+	{
+		window.draw(body);
+		hitBox.Draw(window);
+	}
 }
 
 void SkillE::Fire(const sf::Vector2f& pos, const sf::Vector2f& dir, float s, int d)

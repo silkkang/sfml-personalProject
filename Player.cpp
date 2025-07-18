@@ -7,6 +7,7 @@
 #include "SkillR.h"
 #include <sstream>
 #include "Zombie.h"
+#include "playerUi.h"
 Player::Player(const std::string& name)
 	: GameObject(name)
 {
@@ -202,7 +203,7 @@ void Player::Update(float dt)
 			pos = position + look * 10.f;
 			dir = look;
 			s = 1000.f;
-			d = 10;
+			d = 100;
 			Shoot();
 
 			skillLeft = 2.f;
@@ -303,12 +304,28 @@ void Player::Update(float dt)
 	{
 		skillR -= dt;
 	}
-	if (exp > nextExp)
+	if (!isLevelUp && exp > 0)
 	{
 		level++;
 		exp -= nextExp;
+		hp += 50+level*10;
 		nextExp = 100 * pow(1.15, level - 1);
 
+		isLevelUp = true;
+		FRAMEWORK.SetTimeScale(0.05f);
+
+		if (sceneGame && sceneGame->playerUi)
+		{
+			sceneGame->playerUi->Show();
+
+			sceneGame->playerUi->SetOnSelected([this]() 
+				{
+					
+				isLevelUp = false;
+				FRAMEWORK.SetTimeScale(1.f);
+				sceneGame->playerUi->Hide();
+				});
+		}
 	}
 
 	if (sceneGame && sceneGame->hud)
