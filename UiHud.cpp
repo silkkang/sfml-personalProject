@@ -85,6 +85,17 @@ void UiHud::Init()
 	HpBarBack.setSize(HpBarSize);
 	HpBarBack.setOrigin(0.5f * HpBar.getSize());
 
+	TimeBarSize = { timer, 20.f };
+	TimeBar.setFillColor(sf::Color::Red);
+	TimeBar.setSize(TimeBarSize);
+	TimeBar.setOrigin(0.5f * TimeBar.getSize());
+
+	TimeBarBack.setFillColor(sf::Color::Transparent);
+	TimeBarBack.setOutlineColor(sf::Color::Red);
+	TimeBarBack.setOutlineThickness(2.f);
+	TimeBarBack.setSize(TimeBarSize);
+	TimeBarBack.setOrigin(0.5f * TimeBar.getSize());
+
 	LevelShape.setPointCount(4);
 	LevelShape.setPoint(0, sf::Vector2f(0.f, -50.f));
 	LevelShape.setPoint(1, sf::Vector2f(50.f, 0.f));
@@ -122,14 +133,26 @@ void UiHud::Reset()
 	expBar.setSize({ 0.f,0.f });
 	HpBarBack.setSize(HpBarSize);
 	expBarBack.setSize(expBarSize);
+	TimeBarBack.setSize(TimeBarSize);
+
 }
 
 void UiHud::Update(float dt)
 {
+	timer -= dt;
+	TimeBarSize = { timer, 20.f };
+
+	TimeBar.setSize({ TimeBarSize.x, TimeBarSize.y });
+	TimeBarBack.setSize({ 300.f ,20.f });
+
+
 	expBar.setPosition(position + sf::Vector2f(18.f, -75.f));
 	expBarBack.setPosition(position + sf::Vector2f(18.f, -75.f));
 	HpBar.setPosition(position + sf::Vector2f(50.f, -62.5f));
 	HpBarBack.setPosition(position + sf::Vector2f(50.f, -62.5f));
+
+	TimeBar.setPosition(position + sf::Vector2f(1000.f, -62.5f));
+	TimeBarBack.setPosition(position + sf::Vector2f(1000.f, -62.5f));
 	LevelShape.setPosition(50.f, 658.f);
 	Level.setPosition(45.f, 650.f);
 	Exp.setPosition(60.f, 600.f);
@@ -143,6 +166,8 @@ void UiHud::Draw(sf::RenderWindow& window)
 	window.draw(expBar);
 	window.draw(HpBarBack);
 	window.draw(HpBar);
+	window.draw(TimeBarBack);
+	window.draw(TimeBar);
 	window.draw(LevelShape);
 	window.draw(Level);
 	window.draw(Exp);

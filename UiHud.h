@@ -11,7 +11,7 @@ protected:
 	sf::Text Level;
 	sf::Text Exp;
 	sf::Text Money;
-	
+	float timer = 300;
 
 	std::string fontId;
 	sf::RectangleShape expBar;
@@ -21,6 +21,11 @@ protected:
 	sf::RectangleShape HpBar;
 	sf::RectangleShape HpBarBack;
 	sf::Vector2f HpBarSize;
+
+	sf::RectangleShape TimeBar;
+	sf::RectangleShape TimeBarBack;
+	sf::Vector2f TimeBarSize;
+
 
 	sf::ConvexShape LevelShape;
 

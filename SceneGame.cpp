@@ -84,6 +84,7 @@ void SceneGame::Enter()
 
 
 	SpawnZombies(200);
+	
 	cursor.setTexture(TEXTURE_MGR.Get("graphics/crosshair.png"));
 	Utils::SetOrigin(cursor, Origins::MC);
 
@@ -139,18 +140,7 @@ void SceneGame::Update(float dt)
 {
 	cursor.setPosition(ScreenToUi(InputMgr::GetMousePosition()));
 	
-	if (playerUi->GetActive())
-	{
-	
-		playerUi->Update(dt);
-		return;
-	}
 
-	if (store->GetActive())
-	{
-		store->Update(dt);
-		return;
-	}
 	Scene::Update(dt);
 
 	gameView.setCenter(player->GetPosition());
@@ -219,7 +209,8 @@ void SceneGame::SpawnZombies(int count)
 
 		do
 		{
-			spawnPos = {
+			spawnPos = 
+			{
 				Utils::RandomRange(0.f, 3840.f),
 				Utils::RandomRange(0.f, 6400.f)
 			};
@@ -228,6 +219,8 @@ void SceneGame::SpawnZombies(int count)
 		} while (spawnTile == 5 || spawnTile == 2);
 		zombie->SetPosition(spawnPos);
 		zombie->Reset();
+
+
 
 		zombieList.push_back(zombie);
 	}

@@ -319,11 +319,14 @@ void Player::Update(float dt)
 		if (sceneGame && sceneGame->playerUi)
 		{
 			sceneGame->playerUi->Show();
+			FRAMEWORK.SetTimeScale(0.05f);
 
 			sceneGame->playerUi->SetOnSelected([this]() 
 				{
 					
 				isLevelUp = false;
+				FRAMEWORK.SetTimeScale(1.f);
+
 				sceneGame->playerUi->Hide();
 				});
 		}

@@ -131,16 +131,11 @@ void Zombie::Update(float dt)
 			patrolTimer = 0.f;
 			direction = { 0.f, 0.f };
 		}
-		else if (playerDist<= 250.f)
-		{
-			state = ZombieState::Chase;
-			direction = { 0.f, 0.f };
-		}
+
 		else
 		{
 			direction = Utils::GetNormal(toSpawn);
 			SetRotation(Utils::Angle(direction));
-			
 		}
 		
 		break;

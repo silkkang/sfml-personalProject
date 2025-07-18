@@ -94,10 +94,7 @@ void Store::OnSelect()
 	}
 }
 
-void Store::SetNmae()
-{
-	name.setString(std::to_string(1));
-}
+
 
 void Store::Init()
 {
@@ -117,15 +114,15 @@ void Store::Reset()
 	icon3.setTexture(TEXTURE_MGR.Get(backIcon3));
 	icon4.setTexture(TEXTURE_MGR.Get(backIcon4));
 
-	background.setOrigin(0.f, 0.f);
-	icon1.setOrigin(0.f, 0.f);
-	icon2.setOrigin(0.f, 0.f);
-	icon3.setOrigin(0.f, 0.f);
-	icon4.setOrigin(0.f, 0.f);
+	background.setOrigin(0.5f * sf::Vector2f(background.getLocalBounds().width, background.getLocalBounds().height));
+	icon1.setOrigin(0.5f * sf::Vector2f(icon1.getLocalBounds().width, icon1.getLocalBounds().height));
+	icon2.setOrigin(0.5f * sf::Vector2f(icon2.getLocalBounds().width, icon2.getLocalBounds().height));
+	icon3.setOrigin(0.5f * sf::Vector2f(icon3.getLocalBounds().width, icon3.getLocalBounds().height));
+	icon4.setOrigin(0.5f * sf::Vector2f(icon4.getLocalBounds().width, icon4.getLocalBounds().height));
 
 	sf::Vector2f windowSize = FRAMEWORK.GetWindowSizeF();
 
-	background.setPosition({ windowSize.x * 0.3f, windowSize.y * 0.15f });
+	background.setPosition({ windowSize.x*0.5f,  windowSize.y * 0.5f });
 	icon1.setPosition({ windowSize.x * 0.4f, windowSize.y * 0.35f });
 	icon2.setPosition({ windowSize.x * 0.5f, windowSize.y * 0.35f });
 	icon3.setPosition({ windowSize.x * 0.4f, windowSize.y * 0.55f });
