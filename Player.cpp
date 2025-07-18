@@ -8,6 +8,8 @@
 #include <sstream>
 #include "Zombie.h"
 #include "playerUi.h"
+#include "Store.h"
+
 Player::Player(const std::string& name)
 	: GameObject(name)
 {
@@ -312,7 +314,7 @@ void Player::Update(float dt)
 		nextExp = 100 * pow(1.15, level - 1);
 
 		isLevelUp = true;
-		FRAMEWORK.SetTimeScale(0.05f);
+		
 
 		if (sceneGame && sceneGame->playerUi)
 		{
@@ -322,12 +324,29 @@ void Player::Update(float dt)
 				{
 					
 				isLevelUp = false;
-				FRAMEWORK.SetTimeScale(1.f);
 				sceneGame->playerUi->Hide();
 				});
 		}
 	}
+	if (InputMgr::GetKeyDown(sf::Keyboard::T))
+	{
 
+		isLevelUp = true;
+		FRAMEWORK.SetTimeScale(0.5f);
+
+		if (sceneGame && sceneGame->store)
+		{
+			sceneGame->store->Show();
+
+			sceneGame->store->SetOnSelected([this]()
+				{
+
+					isLevelUp = false;
+					FRAMEWORK.SetTimeScale(1.f);
+					sceneGame->store->Hide();
+				});
+		}
+	}
 	if (sceneGame && sceneGame->hud)
 	{
 		sceneGame->hud->SetExpBar((float)showPer / 100);

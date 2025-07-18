@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "SceneGame.h"
 #include "PlayerUi.h"
+#include "Store.h"
 #include "Player.h"
 #include "TileMap.h"
 #include "Zombie.h"
@@ -42,6 +43,9 @@ void SceneGame::Init()
 
 	playerUi = (PlayerUi*)AddGameObject(new PlayerUi("PlayerUi"));
 	playerUi->SetActive(false);
+
+	store = (Store*)AddGameObject(new Store("Store"));
+	store->SetActive(false);
 
 	tilemapPtr = &tilemap;
 	player->sceneGame = this;
@@ -137,11 +141,16 @@ void SceneGame::Update(float dt)
 	
 	if (playerUi->GetActive())
 	{
+	
 		playerUi->Update(dt);
 		return;
 	}
 
-
+	if (store->GetActive())
+	{
+		store->Update(dt);
+		return;
+	}
 	Scene::Update(dt);
 
 	gameView.setCenter(player->GetPosition());
@@ -181,6 +190,8 @@ void SceneGame::Draw(sf::RenderWindow& window)
 	}
 	if (playerUi->GetActive())
 		playerUi->Draw(window);
+	if (store->GetActive())
+		store->Draw(window);
 	window.draw(cursor);
 }
 

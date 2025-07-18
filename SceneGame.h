@@ -7,6 +7,7 @@ class Zombie;
 class TileMap;
 class UiHud;
 class PlayerUi;
+class Store;
 
 class SceneGame : public Scene
 {
@@ -43,7 +44,7 @@ public:
 	TileMap* tilemapPtr = nullptr;
 	UiHud* hud = nullptr;
 	PlayerUi* playerUi = nullptr;
-
+	Store* store = nullptr;
 	SceneGame();
 	~SceneGame() override = default;
 
