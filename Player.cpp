@@ -322,7 +322,7 @@ void Player::Update(float dt)
 	{
 		skillR -= dt;
 	}
-	if (!isLevelUp && exp > 0)
+	if (!isLevelUp && exp > nextExp)
 	{
 		level++;
 		exp -= nextExp;

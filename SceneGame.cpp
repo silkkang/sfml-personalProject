@@ -240,7 +240,6 @@ void SceneGame::SpawnZombies3(int tileNum, int zombieCountPerTile)
 					x * tilemapPtr->GetTileWidth() + tilemapPtr->GetTileWidth() * 0.5f,
 					y * tilemapPtr->GetTileHeight() + tilemapPtr->GetTileHeight() * 0.5f
 				};
-
 	
 				for (int i = 0; i < zombieCountPerTile; ++i)
 				{
