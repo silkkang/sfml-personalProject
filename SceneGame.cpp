@@ -85,7 +85,7 @@ void SceneGame::Enter()
 
 	Scene::Enter();
 
-	SpawnZombies3(3, 20);
+	//SpawnZombies3(3, 20);
 	SpawnZombies(200);
 	
 	cursor.setTexture(TEXTURE_MGR.Get("graphics/crosshair.png"));

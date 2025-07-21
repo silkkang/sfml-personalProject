@@ -322,10 +322,11 @@ void Player::Update(float dt)
 	{
 		skillR -= dt;
 	}
-	if (!isLevelUp && exp > nextExp)
+	if (!isLevelUp && exp >20)
 	{
 		level++;
-		exp -= nextExp;
+		exp -= 20;
+		//exp -= nextExp;
 		hp += 50+level*10;
 		nextExp = 100 * pow(1.15, level - 1);
 
