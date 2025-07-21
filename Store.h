@@ -2,9 +2,15 @@
 #include <functional>
 #include "GameObject.h"
 #include "TextGo.h"
+#include "Player.h"
+
+class Player;
+
 class Store : public GameObject
 {
 protected:
+	Player* player = nullptr;
+
 	sf::Font font;
 	sf::Text name;
 	sf::Text explain;
@@ -15,7 +21,15 @@ protected:
 	sf::Sprite icon3;
 	sf::Sprite icon4;
 
-	std::string backGroundId = "graphics/Characteristic.png";
+	sf::Text buy1;
+	sf::Text buy2;
+	sf::Text buy3;
+	sf::Text buy4;
+	sf::Text buy5;
+
+	int price = 50;
+
+	std::string backGroundId = "graphics/store.png";
 	std::string backIcon1 = "graphics/mouseLeft.png";
 	std::string backIcon2 = "graphics/mouseRight.png";
 	std::string backIcon3 = "graphics/skillE.png";
@@ -36,6 +50,9 @@ public:
 	void SetScale(const sf::Vector2f& s) override;
 	void SetOrigin(const sf::Vector2f& o) override;
 	void SetOrigin(Origins preset) override;
+
+
+	void SetPlayer(Player* p) { player = p; }
 
 
 	void Show();

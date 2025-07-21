@@ -12,8 +12,10 @@ protected:
 	sf::Vector2f dir;
 	float speed = 0.f;
 	int damage = 0;
+	float duration = 5.f;
 
 	float RemoveBulletTime = 0.f;
+	float damageTimer = 0.f;
 
 	bool isRemove = false;
 	sf::Vector2f direction;
@@ -29,6 +31,8 @@ public:
 	void SetScale(const sf::Vector2f& s) override;
 	void SetOrigin(const sf::Vector2f& o) override;
 	void SetOrigin(Origins preset) override;
+
+	void SetDuration(float d) { duration = d; }
 
 	void Init() override;
 	void Release() override;

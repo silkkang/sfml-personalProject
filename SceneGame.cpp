@@ -32,7 +32,8 @@ void SceneGame::Init()
 	texIds.push_back("graphics/Emotion.png");
 	texIds.push_back("graphics/Rmotion.png");
 	texIds.push_back("graphics/Characteristic.png");
-
+	texIds.push_back("graphics/store.png");
+	
 	if (!tilemap.Load("map/untitled.tmx", "map/imagetile.png", 1))
 		std::cout << "Failed to load tilemap!" << std::endl;
 	tilemap.setPosition(0.f, 0.f);
@@ -46,6 +47,7 @@ void SceneGame::Init()
 
 	store = (Store*)AddGameObject(new Store("Store"));
 	store->SetActive(false);
+	store->SetPlayer(player);
 
 	tilemapPtr = &tilemap;
 	player->sceneGame = this;
@@ -58,6 +60,7 @@ void SceneGame::Init()
 	}
 
 	Scene::Init();
+	
 
 }
 
@@ -82,7 +85,7 @@ void SceneGame::Enter()
 
 	Scene::Enter();
 
-
+	SpawnZombies3(3, 20);
 	SpawnZombies(200);
 	
 	cursor.setTexture(TEXTURE_MGR.Get("graphics/crosshair.png"));
@@ -93,7 +96,6 @@ void SceneGame::Enter()
 	moneyIcon.setPosition(300.f, 665.f);
 	moneyIcon.setScale(0.15f,0.15f);
 
-	
 	mouseLeft.setTexture(TEXTURE_MGR.Get("graphics/mouseLeft.png"));
 	mouseLeft.setOrigin(mouseLeft.getLocalBounds().width * 0.5f, mouseLeft.getLocalBounds().height * 0.5f);
 	mouseLeft.setPosition({ windowSize.x * 0.425f, windowSize.y-50 });
@@ -223,5 +225,49 @@ void SceneGame::SpawnZombies(int count)
 
 
 		zombieList.push_back(zombie);
+	}
+}
+
+void SceneGame::SpawnZombies3(int tileNum, int zombieCountPerTile)
+{
+	for (int y = 0; y < tilemapPtr->GetMapHeight(); ++y)
+	{
+		for (int x = 0; x < tilemapPtr->GetMapWidth(); ++x)
+		{
+			if (tilemapPtr->GetTileData(y, x) == tileNum)
+			{
+				sf::Vector2f tileCenter = {
+					x * tilemapPtr->GetTileWidth() + tilemapPtr->GetTileWidth() * 0.5f,
+					y * tilemapPtr->GetTileHeight() + tilemapPtr->GetTileHeight() * 0.5f
+				};
+
+	
+				for (int i = 0; i < zombieCountPerTile; ++i)
+				{
+					sf::Vector2f offset = Utils::RandomInsideCircle(300.f);
+					sf::Vector2f spawnPos = tileCenter + offset;
+
+					Zombie* zombie = nullptr;
+					if (zombiePool.empty())
+					{
+						zombie = (Zombie*)AddGameObject(new Zombie());
+						zombie->Init();
+					}
+					else
+					{
+						zombie = zombiePool.front();
+						zombiePool.pop_front();
+						zombie->SetActive(true);
+					}
+
+					zombie->SetType((Zombie::Types)Utils::RandomRange(0, Zombie::TotalTypes));
+					zombie->SetPosition(spawnPos);
+					zombie->Reset();
+
+					zombieList.push_back(zombie);
+					
+				}
+			}
+		}
 	}
 }

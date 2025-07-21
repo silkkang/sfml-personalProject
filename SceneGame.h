@@ -59,5 +59,7 @@ public:
 	void Draw(sf::RenderWindow& window) override;
 
 	void SpawnZombies(int count);
+
+	void SpawnZombies3(int tileNum, int zombieCountPerTile);
 };
 

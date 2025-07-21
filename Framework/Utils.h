@@ -65,6 +65,7 @@ public:
 		const std::vector<sf::Vector2f>& polygonB, const sf::Transform& transformB);
 
 	static float Length(const sf::Vector2f& v);
+	static sf::Vector2f RandomInsideCircle(float radius);
 };
 
 

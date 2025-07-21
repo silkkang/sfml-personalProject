@@ -144,7 +144,10 @@ void UiHud::Update(float dt)
 
 	TimeBar.setSize({ TimeBarSize.x, TimeBarSize.y });
 	TimeBarBack.setSize({ 300.f ,20.f });
-
+	if (timer <= 0)
+	{
+		SCENE_MGR.ChangeScene(SceneIds::Game);
+	}
 
 	expBar.setPosition(position + sf::Vector2f(18.f, -75.f));
 	expBarBack.setPosition(position + sf::Vector2f(18.f, -75.f));

@@ -45,14 +45,19 @@ protected:
 	bool isSkillRight = false;
 	int skillRightCount = 0;
 
-	float skillLeft = 0.f;
+	float skillLeft = 2.f;
+	float skillLeftTimer = 0.f;
 	bool isSkillLeft = false;
+	int skillRightadd = 5;
 
 	float skillE = 0.f;
 	bool isSkillE = false;
+	float skillETimer = 0.f;
+
 
 	float skillR = 0.f;
 	bool isSkillR = false;
+	float skillRDuration = 5.f;
 
 	bool isLevelUp = false;
 	sf::Vector2f pos;//position
@@ -70,7 +75,7 @@ public:
 
 
 	void AddExp(float f) { exp += f; }
-	void AddMoney(float f) { money += f; }
+	void AddMoney(float f);
 	int GetLevel();
 	void SetPosition(const sf::Vector2f& pos) override;
 	void SetRotation(float rot) override;
@@ -93,10 +98,17 @@ public:
 	{
 		return body.getGlobalBounds();
 	}
+	void DecreaseSkillLeft(float amount) { skillLeftTimer -= amount; }
+	void IncreaseSkillRIght(int amount) { skillRightadd += amount; }
+	void DecreaseSkillE(float amount) { skillETimer -= amount; }
+	void IncreaseSkillRDuration(float d) { skillRDuration += d; }
+
 	const HitBox& GetHitBox() const { return hitBox; }
 	void Shoot();
 	void SkillEUse();
 	void SkillRUse();
 	void OnDamage(int d);
+
+	float GetMoney() {return money;}
 };
 

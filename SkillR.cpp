@@ -55,8 +55,7 @@ void SkillR::Reset()
 	sceneGame = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
 
 	body.setTexture(TEXTURE_MGR.Get(texId), true);
-	SetOrigin(Origins::ML);
-
+	SetOrigin(Origins::MC);
 	SetPosition({ 0.f, 0.f });
 	SetRotation(0.f);
 	SetScale({ 2.f, 2.f });
@@ -64,60 +63,37 @@ void SkillR::Reset()
 	dir = { 0.f, 0.f };
 	speed = 0.f;
 	RemoveBulletTime = 0.f;
+	damageTimer = 0.f;
 	damage = 0;
+
 }
 
 void SkillR::Update(float dt)
 {
 	RemoveBulletTime += dt;
-	if (RemoveBulletTime >= 3.f) {
+	if (RemoveBulletTime >= duration)
+	{
 		SetActive(false);
 		RemoveBulletTime = 0.f;
 	}
-	direction.x = InputMgr::GetAxis(Axis::Horizontal);
-	direction.y = InputMgr::GetAxis(Axis::Vertical);
-	if (Utils::Magnitude(direction) > 1.f)
+	
+	damageTimer += dt;
+	if (damageTimer >= 0.5f)
 	{
-		Utils::Normalize(direction);
-	}
-	sf::Vector2f nextPos = position;
+		damageTimer = 0.f;
+		hitBox.UpdateTransform(body, GetLocalBounds());
 
-	sf::Vector2f testPosX = nextPos + sf::Vector2f(direction.x * speed * dt, 0.f);
-	if (!sceneGame->tilemapPtr->IsBlocked(testPosX))
-	{
-		nextPos.x = testPosX.x;
-	}
-	else
-	{
-		speed = 0;
-	}
-	sf::Vector2f testPosY = nextPos + sf::Vector2f(0.f, direction.y * speed * dt);
-	if (!sceneGame->tilemapPtr->IsBlocked(testPosY))
-	{
-		nextPos.y = testPosY.y;
+		const std::list<Zombie*>& list = sceneGame->GetZombies();
+		for (auto zombie : list) {
+			if (!zombie->GetActive() || !zombie->GetHitBox().GetActive())
+				continue;
+			if (Utils::CheckCollision(hitBox.rect, zombie->GetHitBox().rect)) {
 
-	}
-	else
-	{
-		speed = 0;
-	}
-
-	SetPosition(position + dir * speed * dt);
-	hitBox.UpdateTransform(body, GetLocalBounds());
-
-
-	const std::list<Zombie*>& list = sceneGame->GetZombies();
-	for (auto zombie : list) {
-		if (!zombie->GetActive() || !zombie->GetHitBox().GetActive())
-			continue;
-		if (Utils::CheckCollision(hitBox.rect, zombie->GetHitBox().rect)) {
-			//zombie->SetActive(false);
-			SetActive(false);
-			zombie->OnDamage(damage);
-
-			break;
+				zombie->OnDamage(damage);
+			}
 		}
 	}
+
 }
 
 void SkillR::Draw(sf::RenderWindow& window)
@@ -129,10 +105,10 @@ void SkillR::Draw(sf::RenderWindow& window)
 void SkillR::Fire(const sf::Vector2f& pos, const sf::Vector2f& dir, float s, int d)
 {
 	SetPosition(pos);
-	this->dir = dir;
-	speed = s;
+	
+	speed = 0.f;
 	damage = d;
 
-	SetRotation(Utils::Angle(this->dir));
+	SetRotation(0.f);
 
 }

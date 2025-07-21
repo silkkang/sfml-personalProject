@@ -98,6 +98,33 @@ void Store::OnSelect()
 
 void Store::Init()
 {
+
+	buy1.setFont(font);
+	buy1.setCharacterSize(30);
+	buy1.setFillColor(sf::Color::Yellow);
+	buy1.setOrigin(0.5f * sf::Vector2f(icon1.getLocalBounds().width, icon1.getLocalBounds().height));
+
+	buy2.setFont(font);
+	buy2.setCharacterSize(30);
+	buy2.setFillColor(sf::Color::Yellow);
+	buy2.setOrigin(0.5f * sf::Vector2f(icon1.getLocalBounds().width, icon1.getLocalBounds().height));
+
+	buy3.setFont(font);
+	buy3.setCharacterSize(30);
+	buy3.setFillColor(sf::Color::Yellow);
+	buy3.setOrigin(0.5f * sf::Vector2f(icon2.getLocalBounds().width, icon2.getLocalBounds().height));
+
+	buy4.setFont(font);
+	buy4.setCharacterSize(30);
+	buy4.setFillColor(sf::Color::Yellow);
+	buy4.setOrigin(0.5f * sf::Vector2f(icon3.getLocalBounds().width, icon3.getLocalBounds().height));
+
+	buy5.setFont(font);
+	buy5.setCharacterSize(30);
+	buy5.setFillColor(sf::Color::Yellow);
+	buy5.setOrigin(0.5f * sf::Vector2f(icon4.getLocalBounds().width, icon4.getLocalBounds().height));
+
+
 }
 
 void Store::Release()
@@ -123,10 +150,19 @@ void Store::Reset()
 	sf::Vector2f windowSize = FRAMEWORK.GetWindowSizeF();
 
 	background.setPosition({ windowSize.x*0.5f,  windowSize.y * 0.5f });
-	icon1.setPosition({ windowSize.x * 0.4f, windowSize.y * 0.35f });
-	icon2.setPosition({ windowSize.x * 0.5f, windowSize.y * 0.35f });
-	icon3.setPosition({ windowSize.x * 0.4f, windowSize.y * 0.55f });
-	icon4.setPosition({ windowSize.x * 0.5f, windowSize.y * 0.55f });
+	icon1.setPosition({ windowSize.x * 0.3f, windowSize.y * 0.35f });
+	buy1.setPosition({ windowSize.x * 0.375f, windowSize.y * 0.8f });
+	buy2.setPosition({ windowSize.x * 0.28f, windowSize.y * 0.63f });
+
+	icon2.setPosition({ windowSize.x * 0.45f, windowSize.y * 0.35f });
+	buy3.setPosition({ windowSize.x * 0.42f, windowSize.y * 0.63f });
+
+	icon3.setPosition({ windowSize.x * 0.3f, windowSize.y * 0.55f });
+	buy4.setPosition({ windowSize.x * 0.28f, windowSize.y * 0.42f });
+
+	icon4.setPosition({ windowSize.x * 0.45f, windowSize.y * 0.55f });
+	buy5.setPosition({ windowSize.x * 0.42f, windowSize.y * 0.42f });
+
 
 	background.setScale(0.5f, 0.5f);
 	icon1.setScale(1.f, 1.f);
@@ -151,8 +187,15 @@ void Store::Update(float dt)
 	if (!isShow)
 		return;
 
+	buy2.setString(std::to_string(price) + "G");
+	buy3.setString(std::to_string(price) + "G");
+	buy4.setString(std::to_string(price) + "G");
+	buy5.setString(std::to_string(price) + "G");
 
-
+	if (player)
+	{
+		buy1.setString(std::to_string((int)player->GetMoney()) + " G");
+	}
 
 	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
 	{
@@ -164,26 +207,88 @@ void Store::Update(float dt)
 
 		if (selectBox1.contains(mouseWorldPos))
 		{
-			std::cout << "1선택 박스 클릭됨!" << std::endl;
-			OnSelect();
+			if (player && player->GetMoney() >= price)
+			{
+				player->AddMoney(-price);  
+				if (player)
+				{
+					player->DecreaseSkillLeft(0.3f);
+				}
+				std::cout << "구매 성공!" << std::endl;
+				OnSelect();
+				price += 50;
+			}
+			else
+			{
+				std::cout << "골드 부족!" << std::endl;
+			}
 		}
 		if (selectBox2.contains(mouseWorldPos))
 		{
-			std::cout << "2선택 박스 클릭됨!" << std::endl;
-			OnSelect();
+			if (player && player->GetMoney() >= price)
+			{
+				player->AddMoney(-price);
+				if (player)
+				{
+					player->IncreaseSkillRIght(1);
+				}
+				std::cout << "구매 성공!" << std::endl;
+				OnSelect();
+				price += 50;
+
+			}
+			else
+			{
+				std::cout << "골드 부족!" << std::endl;
+			}
 		}
 		if (selectBox3.contains(mouseWorldPos))
 		{
-			std::cout << "3선택 박스 클릭됨!" << std::endl;
-			OnSelect();
+			if (player && player->GetMoney() >= price)
+			{
+				player->AddMoney(-price);
+				if (player)
+				{
+					player->DecreaseSkillE(0.5f);
+				}
+				std::cout << "구매 성공!" << std::endl;
+				OnSelect();
+				price += 50;
+
+			}
+			else
+			{
+				std::cout << "골드 부족!" << std::endl;
+			}
 		}
 		if (selectBox4.contains(mouseWorldPos))
 		{
-			std::cout << "4선택 박스 클릭됨!" << std::endl;
-			OnSelect();
+			if (player && player->GetMoney() >= price)
+			{
+				player->AddMoney(-price);
+				std::cout << "r 강화!" << std::endl;
+				if (player)
+				{
+					player->IncreaseSkillRDuration(1.f);
+				}
+				std::cout << "구매 성공!" << std::endl;
+				OnSelect();
+				price += 50;
+
+			}
+			else
+			{
+				std::cout << "골드 부족!" << std::endl;
+			}
 		}
 	}
 	name.setPosition(45.f, 650.f);
+
+	if (InputMgr::GetKeyDown(sf::Keyboard::Escape))
+	{
+		FRAMEWORK.SetTimeScale(1.f);
+		SetActive(false);
+	}
 }
 
 void Store::Draw(sf::RenderWindow& window)
@@ -198,5 +303,9 @@ void Store::Draw(sf::RenderWindow& window)
 	window.draw(icon3);
 	window.draw(icon4);
 	window.draw(name);
-
+	window.draw(buy1);
+	window.draw(buy2);
+	window.draw(buy3);
+	window.draw(buy4);
+	window.draw(buy5);
 }

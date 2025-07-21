@@ -16,6 +16,13 @@ Player::Player(const std::string& name)
 
 }
 
+void Player::AddMoney(float amount)
+{
+	money += amount;
+	if (sceneGame && sceneGame->hud)
+		sceneGame->hud->SetMoney(money);
+}
+
 int Player::GetLevel()
 {
 	return level;
@@ -67,6 +74,10 @@ void Player::Release()
 
 void Player::Reset()
 {
+	if (sceneGame && sceneGame->playerUi)
+	{
+		sceneGame->playerUi->SetPlayer(this);
+	}
 	if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Game)
 	{
 		sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
@@ -110,8 +121,11 @@ void Player::Reset()
 	nextExp = 100.f;
 	speed = 300.f;
 	skillRight = 0.f;
-	skillLeft = 0.f;
+	skillLeft = 2.f;
+	skillLeftTimer = 2.f;
+	skillETimer = 5.f;
 	skillRightCount = 0;
+	skillRightadd = 5;
 	if (sceneGame && sceneGame->hud)
 	{
 		sceneGame->hud->SetLevel(level);
@@ -199,16 +213,16 @@ void Player::Update(float dt)
 	}
 	if (isSkillLeft)
 	{
-		skillLeft -= dt;
+
 		if (skillLeft <= 0)
 		{
 			pos = position + look * 10.f;
 			dir = look;
 			s = 1000.f;
-			d = 100;
+			d = 10;
 			Shoot();
+			skillLeft = skillLeftTimer;
 
-			skillLeft = 2.f;
 		}
 		if (InputMgr::GetMouseButtonUp(sf::Mouse::Left))
 		{
@@ -239,7 +253,7 @@ void Player::Update(float dt)
 			Shoot();
 
 			skillRightCount++;
-			if (skillRightCount >= 5)
+			if (skillRightCount >= skillRightadd)
 			{
 				isSkillRight = false;
 				skillRight = 5.f;
@@ -250,8 +264,6 @@ void Player::Update(float dt)
 			}
 
 		}
-
-
 	}
 	else if (skillRight > 0.f)
 	{
@@ -274,7 +286,7 @@ void Player::Update(float dt)
 			SkillEUse();
 			/*Zombie* zombie = nullptr;
 			zombie->OnSpeed();*/
-			skillE = 5.f;
+			skillE = skillETimer;
 		}
 		isSkillE = false;
 	}
@@ -282,23 +294,27 @@ void Player::Update(float dt)
 	{
 		skillE -= dt;
 	}
-
+	if (sceneGame && sceneGame->playerUi)
+	{
+		sceneGame->playerUi->SetPlayerLevel(level);
+	}
 	if (InputMgr::GetKeyDown(sf::Keyboard::R))
 	{
-
+		if(level >5)
 		isSkillR = true;
 	}
 	if (isSkillR)
 	{
 		if (skillR <= 0)
 		{
-			pos = position + look * 10.f;
-			dir = look;
+			pos = position;
+			dir = { 0.f, 0.f };
 			s = 0.f;
 			d = 10;
+
 			SkillRUse();
 
-			skillR = 5.f;
+			skillR = 15.f;
 		}
 		isSkillR = false;
 	}
@@ -428,7 +444,7 @@ void Player::SkillRUse()
 {
 	SkillR* skillR = nullptr;
 	showPer = (exp / nextExp) * 100.f;
-
+	
 
 	if (skillRPool.empty())
 	{
@@ -444,6 +460,8 @@ void Player::SkillRUse()
 
 	skillR->Reset();
 	skillR->Fire(pos, dir, s, d);
+
+	skillR->SetDuration(skillRDuration);
 
 	skillRList.push_back(skillR);
 	sceneGame->AddGameObject(skillR);

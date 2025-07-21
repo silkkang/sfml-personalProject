@@ -23,6 +23,7 @@ public:
     int GetMapHeight() const { return mapHeight; }
     int GetTileWidth() const { return tileWidth; }
     int GetTileHeight() const { return tileHeight; }
+    int GetTileData(int y, int x) { return tileData[y][x]; }
 
     bool IsBlocked(sf::Vector2f& pos);
     int IsSpawn(const sf::Vector2f& pos);

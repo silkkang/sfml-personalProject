@@ -351,3 +351,10 @@ float Utils::Length(const sf::Vector2f& v)
 {
     return sqrtf(v.x * v.x + v.y * v.y);
 }
+
+sf::Vector2f Utils::RandomInsideCircle(float radius)
+{
+    float angle = Utils::RandomRange(0.f, 360.f) * 3.14159265f / 180.f;
+    float dist = Utils::RandomRange(0.f, radius);
+    return { cos(angle) * dist, sin(angle) * dist };
+}
